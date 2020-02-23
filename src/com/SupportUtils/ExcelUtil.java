@@ -40,12 +40,12 @@ public class ExcelUtil {
 			throw new RuntimeException("Test Sheet name is Empty. Check TestData.ExcelTestSheetName value in QAFConfig.properties");
 		}
 		try {
+			log.info("Attempting to load data from "+ testDataFilePath);
 			if (testDataFilePath.toUpperCase().contains("XLSX")) {
 				wb = new XSSFWorkbook(xlFile);
 			} else {
 				wb = new HSSFWorkbook(new FileInputStream(xlFile));
 			}
-			log.info("Data file opened from location : " + testDataFilePath);
 			sheet = wb.getSheet(testSheetName);
 			if (sheet == null) {
 				log.error("Test Sheet " + testSheetName + " , is not found in Test data file.");				
@@ -56,8 +56,7 @@ public class ExcelUtil {
 
 			int intRowCount = sheet.getLastRowNum();
 			int intColCount = sheet.getRow(0).getLastCellNum();
-			log.info("Data file Found Rows : " + intRowCount + " & Coulumn : " + intColCount);
-
+			log.info("Excel file has "+intRowCount+" Rows &" + intColCount + " Coulumns" );
 			ArrayList<String> paramList = new ArrayList<String>();
 			for (int i = 0; i < intColCount; i++) {
 				Row curRow = sheet.getRow(0);
@@ -77,8 +76,7 @@ public class ExcelUtil {
 				}
 				map.put(strTestCaseId, tempMap);
 			}
-			log.info("Data loaded into map.\n" + map);
-			log.info("Data file closed, " + testDataFilePath);
+			log.info("Data loaded - " + map);
 		} catch (Exception e) {
 			log.error("Exception while loading/reading the file. \n" + ExceptionUtils.getStackTrace(e));
 			throw new RuntimeException("Exception while loading/reading the Excel file.");

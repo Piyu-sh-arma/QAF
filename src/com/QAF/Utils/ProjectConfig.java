@@ -12,8 +12,9 @@ public class ProjectConfig {
 	static {
 		config = new Properties();
 		try {
+			log.info("<---Initiating Properties--->");
 			config.load(new FileInputStream("./resources/configFiles/QAFConfig.properties"));			
-			log.info("Properties loaded, "+config);
+			log.info("Properties Info - "+config); 
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}

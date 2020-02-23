@@ -41,7 +41,7 @@ public class FWDataManager {
 			return null;
 		}
 		HashMap<String, String> dataMap = map.get(m.getName());
-		log.info("Returning data for Test : " + m.getName() + "\n" + dataMap);
+		log.info("Returning data for Test : " + m.getName() + " ->" + dataMap);
 		return new Object[][] { { dataMap } };
 
 	}
