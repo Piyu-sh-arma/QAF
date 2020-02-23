@@ -10,13 +10,16 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+
 import com.SupportUtils.DateAndTime;
 import com.SupportUtils.FilesUtil;
 import com.SupportUtils.TestRunInfo;
 import com.SupportUtils.TestRunStatus;
 
 public class Reporter {
-
+	String name;
+	private static final Logger log = Logger.getLogger(Reporter.class);
 	public static ConcurrentHashMap<String, TestRunInfo> runs;
 	static {
 		runs = new ConcurrentHashMap<String, TestRunInfo>();
@@ -29,7 +32,6 @@ public class Reporter {
 			try {
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
 				HashMap<String, String> testDetails = FWDataManager.getTestData(m.getName());
-
 				runs.put(m.getName(), new TestRunInfo());
 
 				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + m.getName() + "_"
@@ -50,8 +52,7 @@ public class Reporter {
 						+ "<table id='stepsSummary'>\n" + "<thead>\n<th>Step Name</th>\n"
 						+ "<th>Description</th>\n<th>Result</th>\n<th>Time</th>\n</thead>\n<tbody id='steps'>\n";
 
-				System.out.println(resultFileHeaderPart2);
-
+				log.info(resultFileHeaderPart2);
 				FilesUtil.writeToFile(sourceFile, resultFileHeaderPart1 + resultFileHeaderPart2);
 
 			} catch (IOException e) {
