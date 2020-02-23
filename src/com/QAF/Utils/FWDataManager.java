@@ -46,9 +46,6 @@ public class FWDataManager {
 	
 	
 	public static HashMap<String, String> getTestData(String TestCaseId) {
-		String testDataFilePath = ProjectConfig.getProperty("TestData.ExcelFilePath");
-		String testSheetName = ProjectConfig.getProperty("TestData.ExcelTestSheetName");
-		map = ExcelUtil.loadExcelData(testDataFilePath, testSheetName);
 		if (map != null) {
 			if (map.containsKey(TestCaseId)) {
 				return map.get(TestCaseId);

@@ -31,6 +31,7 @@ public class Reporter {
 		String sourceFile = ProjectConfig.getProperty("TestResult.SourceHTML");
 		if (FilesUtil.fileExist(sourceFile)) {
 			try {
+				log.info("Initiating report for test "+m.getName());
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
 				HashMap<String, String> testDetails = FWDataManager.getTestData(m.getName());
 				runs.put(m.getName(), new TestRunInfo());
@@ -45,7 +46,7 @@ public class Reporter {
 				runs.get(m.getName()).testStatus = TestRunStatus.In_Progress;
 
 				String resultFileHeaderPart2 = "\n<script>\ndocument.getElementById('testName').innerText = '"
-						+ testDetails.get("Test Name") + "'\n" + "document.getElementById('testId').innerText = '"
+						+ testDetails.get("Test Name") + "'\n" + "document.getElementById('TestCaseId').innerText = '"
 						+ m.getName() + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
 						+ "document.getElementById('MachineName').innerText = '"
 						+ InetAddress.getLocalHost().getHostName() + "'\n"
@@ -55,7 +56,7 @@ public class Reporter {
 						+ "<table id='stepsSummary'>\n" + "<thead>\n<th>Step Name</th>\n"
 						+ "<th>Description</th>\n<th>Result</th>\n<th>Time</th>\n</thead>\n<tbody id='steps'>\n";
 
-				log.info(resultFileHeaderPart2);
+				//log.info(resultFileHeaderPart2);
 				FilesUtil.writeToFile(testReportFilePath, resultFileHeaderPart1 + resultFileHeaderPart2);
 
 			} catch (IOException e) {
@@ -69,6 +70,7 @@ public class Reporter {
 
 	public static void closeReport(Method m) {
 		try {
+			log.info("Closing report for test "+m.getName());
 			TestRunInfo curTestRunInfo = runs.get(m.getName());
 			if (curTestRunInfo == null) {
 				return;
@@ -101,14 +103,14 @@ public class Reporter {
 					+ DateAndTime.formatAsString(curTestRunInfo.endStamp, "YYYY-MM-dd hh:mm:ss a") + "'\n"
 					+ "document.getElementById('ExecutionTime').innerText = '"
 					+ DateAndTime.getDuation(timeTaken, TimeUnit.SECONDS) + "'\n"
-					+ "document.getElementById('status').innerText = '"+tstStatus+"'\n" + "<script>\n</body>\n</html>";
+					+ "document.getElementById('status').innerText = '"+tstStatus+"'\n" + "</script>\n</body>\n</html>";
 			System.out.println(resultFileFooter);
 			FilesUtil.writeToFile(curTestRunInfo.resultFilePath, resultFileFooter, true);
-
+			log.info("Closed report - "+curTestRunInfo.resultFilePath);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-
+		
 	}
 
 	public static void main(String[] args) {
