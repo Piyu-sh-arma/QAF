@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="false">
+	<listeners>
+		<listener class-name="com.QAF.Utils.QWAFListerners" />
+	</listeners>
+
+	<test name="Test">
+		<classes>
+			<class name="com.TestSuits.AppTests" />
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

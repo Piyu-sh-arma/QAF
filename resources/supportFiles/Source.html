@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #stepsSummary,
+        #testSummary {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #stepsSummary td,
+        #stepsSummary th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .RowPass:hover {
+            background-color: rgb(227, 243, 228);
+        }
+        .RowFail:hover {
+            background-color: rgb(255, 204, 204);
+        }
+        .RowInfo:hover {
+            background-color: rgb(184, 184, 184);
+        }
+
+        #stepsSummary th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: blue;
+            color: white;
+        }
+
+        #testSummary {
+            border-width: 5px;
+            border-style: double;
+            border-color: #ddd;
+        }
+
+        #testSummary td,
+        #testSummary tr {
+            border: 1px solid #ddd;
+            padding: 8px;
+
+        }
+
+        #testSummary .fields {
+            color: blue;
+            font: bold;
+            text-align: right
+        }
+
+        .StepResultPass,
+        .StepResultFail,
+        .StepResultInfo {
+            text-align: center;
+            color: transparent;
+        }
+
+        .StepResultFail {
+            text-shadow: 0 0 0 red;
+        }
+
+        .StepResultPass {
+            text-shadow: 0 0 0 green;
+        }
+
+        .StepResultInfo {
+            text-shadow: 0 0 0 black;
+        }
+    </style>
+    <script>
+        function fn_FilterResults(value) {
+            var resultRows = document.getElementById('steps').getElementsByTagName("tr");
+            for (var i = 0; i < resultRows.length; i++) {
+                var indx = resultRows[i].getElementsByTagName('td')[2].getAttribute('class').indexOf(value);
+                if(value == "All"){
+                    resultRows[i].style.display = "";
+                } else if (indx >= 0) {
+                    resultRows[i].style.display = "";
+                } else {
+                    resultRows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1 style="text-align: center ; color: mediumblue"><u> Detailed Report </u><span>&#9998;</span></h1>
+    <table id="testSummary">
+        <tr>
+            <td class="fields">Test Name :</td>
+            <td id="testName" colspan="3"></td>
+        </tr>
+        <tr>
+            <td class="fields">Test Id</td>
+            <td id="TestCaseId"></td>
+            <td class="fields">ALM ID</td>
+            <td id="ALMID"></td>
+        </tr>
+        <tr>
+			<td class="fields">Status</td>
+            <td id="status"></td>
+            <td class="fields">Machine Name</td>
+            <td id="MachineName"></td>           
+        </tr>
+		<tr>
+            <td class="fields">Pass Steps (%)</td>
+            <td id="PassSteps"></td>
+            <td class="fields">Fail Steps (%)</td>
+            <td id="FailSteps"></td>
+        </tr>
+        <tr>
+            <td class="fields">Start time</td>
+            <td id="Starttime"></td>
+            <td class="fields">End time</td>
+            <td id="Endtime"></td>
+        </tr>
+        <tr>
+            <td class="fields">Total Execution time</td>
+            <td id="ExecutionTime"></td>
+            <td class="fields">Filter Steps</td>
+            <td>
+                <input type="radio" class="StepResultPass" name="filter" onclick="fn_FilterResults('Pass')"> Passed <span style="color: transparent;  text-shadow: 0 0 0 green; " >&#10004;</span>
+                <input type="radio" name="filter" onclick="fn_FilterResults('Fail')"> Failed &#10060;
+                <input type="radio" name="filter" onclick="fn_FilterResults('Info')"> Info &#8505;
+                <input type="radio" name="filter" onclick="fn_FilterResults('All')" checked> All
+            </td>
+        </tr>
+    </table>
+    
+    
