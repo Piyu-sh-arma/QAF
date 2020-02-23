@@ -82,7 +82,6 @@ public class ExcelUtil {
 			throw new RuntimeException("Exception while loading/reading the Excel file.");
 		} finally {
 			try {
-				wb.cl
 				wb.close();
 				log.info("Data file closed, " + testDataFilePath);
 			} catch (IOException e1) {
