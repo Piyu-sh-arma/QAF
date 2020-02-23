@@ -4,8 +4,7 @@
 	<listeners>
 		<listener class-name="com.QAF.Utils.QWAFListerners" />
 	</listeners>
-
-	<test name="Test">
+	<test name="Test" preserve-order="true">
 		<classes>
 			<class name="com.TestSuits.AppTests" />
 		</classes>

@@ -32,13 +32,10 @@ public class FWDataManager {
 
 	@DataProvider(name = "ExcelProvider")
 	public static Object[][] getData(Method m) {
-		if (map == null) {
-			String testDataFilePath = ProjectConfig.getProperty("TestData.ExcelFilePath");
-			String testSheetName = ProjectConfig.getProperty("TestData.ExcelTestSheetName");
-			map = ExcelUtil.loadExcelData(testDataFilePath, testSheetName);
-		}
-		if (map == null) {
-			return null;
+		log.info("Data requested for Test : " + m.getName());
+		if (!map.containsKey(m.getName())) {
+			log.error("Data not available for Test : " + m.getName());
+			throw new RuntimeException("Data not available for Test : " + m.getName());
 		}
 		HashMap<String, String> dataMap = map.get(m.getName());
 		log.info("Returning data for Test : " + m.getName() + " ->" + dataMap);

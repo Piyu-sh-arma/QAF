@@ -3,6 +3,9 @@ package com.Base;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+
+import java.lang.reflect.Method;
+
 import org.apache.log4j.Logger;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeTest;
@@ -17,11 +20,13 @@ public class TestBase {
 	private static final Logger log = Logger.getLogger(TestBase.class);
   
   @BeforeMethod(alwaysRun = true)
-  public void beforeMethod() {
+  public void beforeMethod(Method m) {
+	  log.info("Executing Before Method for test - "+m.getName());
   }
 
   @AfterMethod(alwaysRun = true)
-  public void afterMethod() {
+  public void afterMethod(Method m) {
+	  log.info("Executing After Method for test - "+m.getName());
   }
 
   @BeforeClass
