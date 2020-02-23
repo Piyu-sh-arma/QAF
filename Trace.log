@@ -33,3 +33,38 @@ document.getElementById('Starttime').innerText = '2020-02-24 12:39:15 AM'
 2020-02-24 12:39:16[INFO ][TestBase.java] - Executing After Method for test - f1
 2020-02-24 12:39:16[INFO ][FWDataManager.java] - Data requested for Test : fx
 2020-02-24 12:39:16[ERROR][FWDataManager.java] - Data not available for Test : fx
+2020-02-24 12:48:05[INFO ][QWAFListerners.java] - <---- Starting TestNG Execution ---->
+2020-02-24 12:48:05[INFO ][ProjectConfig.java] - <---Initiating Properties--->
+2020-02-24 12:48:05[INFO ][ProjectConfig.java] - Properties Info - {TestResult.Directory=./htmlResults, TestResult.SourceHTML=./resources/supportFiles/Source.html, TestData.Source=Excel, TestData.ExcelTestSheetName=Data, TestData.ExcelFilePath=./resources/Test Data/TestData.xlsx, TestResult.ResultFileDatePostfix=yy_MM_dd_hh_mm}
+2020-02-24 12:48:05[INFO ][ExcelUtil.java] - Attempting to load data from ./resources/Test Data/TestData.xlsx
+2020-02-24 12:48:06[INFO ][ExcelUtil.java] - Excel file has 3-Rows & 6-Coulumns
+2020-02-24 12:48:06[INFO ][ExcelUtil.java] - Data loaded - {f1={Execution Flag=Yes, ALM ID=, TestParam1=fdas1, TestParam2=QRRt2, Test Name=XYZ1, TestCaseId=f1}, f2={Execution Flag=No, ALM ID=, TestParam1=fdas2, TestParam2=QRRt3, Test Name=XYZ2, TestCaseId=f2}, f3={Execution Flag=Passed, ALM ID=, TestParam1=fdas3, TestParam2=QRRt4, Test Name=XYZ3, TestCaseId=f3}}
+2020-02-24 12:48:06[INFO ][ExcelUtil.java] - Data file closed, ./resources/Test Data/TestData.xlsx
+2020-02-24 12:48:06[INFO ][FWDataManager.java] - Data requested for Test : f1
+2020-02-24 12:48:06[INFO ][FWDataManager.java] - Returning data for Test : f1 ->{Execution Flag=Yes, ALM ID=, TestParam1=fdas1, TestParam2=QRRt2, Test Name=XYZ1, TestCaseId=f1}
+2020-02-24 12:48:06[INFO ][TestBase.java] - Executing Before Method for test - f1
+2020-02-24 12:48:06[INFO ][ExcelUtil.java] - Attempting to load data from ./resources/Test Data/TestData.xlsx
+2020-02-24 12:48:06[INFO ][ExcelUtil.java] - Excel file has 3-Rows & 6-Coulumns
+2020-02-24 12:48:06[INFO ][ExcelUtil.java] - Data loaded - {f1={Execution Flag=Yes, ALM ID=, TestParam1=fdas1, TestParam2=QRRt2, Test Name=XYZ1, TestCaseId=f1}, f2={Execution Flag=No, ALM ID=, TestParam1=fdas2, TestParam2=QRRt3, Test Name=XYZ2, TestCaseId=f2}, f3={Execution Flag=Passed, ALM ID=, TestParam1=fdas3, TestParam2=QRRt4, Test Name=XYZ3, TestCaseId=f3}}
+2020-02-24 12:48:06[INFO ][ExcelUtil.java] - Data file closed, ./resources/Test Data/TestData.xlsx
+2020-02-24 12:48:06[INFO ][Reporter.java] - 
+<script>
+document.getElementById('testName').innerText = 'XYZ1'
+document.getElementById('testId').innerText = 'f1'
+document.getElementById('status').innerText = 'In Progress'
+document.getElementById('MachineName').innerText = 'DESKTOP-OI75Q4F'
+document.getElementById('ALMID').innerText = ''
+document.getElementById('Starttime').innerText = '2020-02-24 12:48:06 AM'
+</script>
+<table id='stepsSummary'>
+<thead>
+<th>Step Name</th>
+<th>Description</th>
+<th>Result</th>
+<th>Time</th>
+</thead>
+<tbody id='steps'>
+
+2020-02-24 12:48:07[INFO ][TestBase.java] - Executing After Method for test - f1
+2020-02-24 12:48:08[INFO ][FWDataManager.java] - Data requested for Test : fx
+2020-02-24 12:48:08[ERROR][FWDataManager.java] - Data not available for Test : fx

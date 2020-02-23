@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +36,9 @@ public class Reporter {
 				runs.put(m.getName(), new TestRunInfo());
 
 				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + m.getName() + "_"
-						+ ProjectConfig.getProperty("TestResult.ResultFileDatePostfix") + ".html";
+						+ DateAndTime.formatAsString(new Date(),
+								ProjectConfig.getProperty("TestResult.ResultFileDatePostfix"))
+						+ ".html";
 				Instant start = Instant.now();
 				runs.get(m.getName()).resultFilePath = testReportFilePath;
 				runs.get(m.getName()).startStamp = start;
@@ -53,7 +56,7 @@ public class Reporter {
 						+ "<th>Description</th>\n<th>Result</th>\n<th>Time</th>\n</thead>\n<tbody id='steps'>\n";
 
 				log.info(resultFileHeaderPart2);
-				FilesUtil.writeToFile(sourceFile, resultFileHeaderPart1 + resultFileHeaderPart2);
+				FilesUtil.writeToFile(testReportFilePath, resultFileHeaderPart1 + resultFileHeaderPart2);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
