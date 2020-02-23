@@ -53,8 +53,8 @@ public class Reporter {
 						+ "document.getElementById('ALMID').innerText = '" + testDetails.get("ALM ID") + "'\n"
 						+ "document.getElementById('Starttime').innerText = '"
 						+ DateAndTime.formatAsString(start, "YYYY-MM-dd hh:mm:ss a") + "'\n</script>\n"
-						+ "<table id='stepsSummary'>\n" + "<thead>\n<th>Step Name</th>\n"
-						+ "<th>Description</th>\n<th>Result</th>\n<th>Time</th>\n</thead>\n<tbody id='steps'>\n";
+						+ "<table id='stepsSummary'>\n" + "<thead><tr>\n<th>Step Name</th>\n"
+						+ "<th>Description</th>\n<th>Result</th>\n<th>Time</th>\n</tr></thead>\n<tbody id='steps'>\n";
 
 				//log.info(resultFileHeaderPart2);
 				FilesUtil.writeToFile(testReportFilePath, resultFileHeaderPart1 + resultFileHeaderPart2);
