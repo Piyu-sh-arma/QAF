@@ -42,7 +42,7 @@ public class ExcelUtil {
 		try {
 			log.info("Attempting to load data from "+ testDataFilePath);
 			if (testDataFilePath.toUpperCase().contains("XLSX")) {
-				wb = new XSSFWorkbook(xlFile);
+				wb = new XSSFWorkbook(new FileInputStream(xlFile));
 			} else {
 				wb = new HSSFWorkbook(new FileInputStream(xlFile));
 			}
@@ -82,6 +82,7 @@ public class ExcelUtil {
 			throw new RuntimeException("Exception while loading/reading the Excel file.");
 		} finally {
 			try {
+				wb.cl
 				wb.close();
 				log.info("Data file closed, " + testDataFilePath);
 			} catch (IOException e1) {

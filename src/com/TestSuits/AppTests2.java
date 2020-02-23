@@ -11,23 +11,15 @@ import bsh.This;
 
 import java.util.HashMap;
 
-public class AppTests extends TestBase {
+public class AppTests2 extends TestBase {
 	private static final Logger log = Logger.getLogger(This.class);
 
 	@Test(dataProvider = "ExcelProvider", dataProviderClass = FWDataManager.class)
-	public void f2(HashMap<String, String> data) {
+	public void f3(HashMap<String, String> data) {
 		System.out.println("Executing test ->" + data);
 		log.info("************" + Thread.currentThread().getName());
 		MyPage page = new MyPage();
 		page.display();
 	}
 
-	@Test(dataProvider = "ExcelProvider", dataProviderClass = FWDataManager.class)
-	public void f1(HashMap<String, String> data) {
-		System.out.println("Executing test ->" + data);
-		log.info("************" + Thread.currentThread().getName());
-		MyPage page = new MyPage();
-		page.display();
-
-	}
 }

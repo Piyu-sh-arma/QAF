@@ -22,6 +22,7 @@ public class TestBase {
   
   @BeforeMethod(alwaysRun = true)
   public void beforeMethod(Method m) {
+	 Thread.currentThread().setName(m.getName());
 	  log.info("Executing Before Method for test - "+m.getName());
 	  Reporter.initialzeReport(m);
 	  

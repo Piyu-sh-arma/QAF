@@ -31,7 +31,7 @@ public class Reporter {
 		String sourceFile = ProjectConfig.getProperty("TestResult.SourceHTML");
 		if (FilesUtil.fileExist(sourceFile)) {
 			try {
-				log.info("Initiating report for test "+m.getName());
+				log.info("Initiating report for test "+Thread.currentThread().getName());
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
 				HashMap<String, String> testDetails = FWDataManager.getTestData(m.getName());
 				runs.put(m.getName(), new TestRunInfo());
