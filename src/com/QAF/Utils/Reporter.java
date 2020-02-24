@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import com.SupportUtils.DateAndTime;
 import com.SupportUtils.FilesUtil;
+import com.SupportUtils.StepStatus;
 import com.SupportUtils.TestRunInfo;
 import com.SupportUtils.TestRunStatus;
 
@@ -27,34 +28,34 @@ public class Reporter {
 
 	}
 
-	public static void initialzeReport(Method m) {
+	public static void initialzeReport(Method curTest) {
 		String sourceFile = ProjectConfig.getProperty("TestResult.SourceHTML");
 		if (FilesUtil.fileExist(sourceFile)) {
 			try {
 				log.info("Initiating report for test "+Thread.currentThread().getName());
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
-				HashMap<String, String> testDetails = FWDataManager.getTestData(m.getName());
-				runs.put(m.getName(), new TestRunInfo());
+				HashMap<String, String> testDetails = FWDataManager.getTestData(curTest.getName());
+				runs.put(curTest.getName(), new TestRunInfo());
 
-				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + m.getName() + "_"
+				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + curTest.getName() + "_"
 						+ DateAndTime.formatAsString(new Date(),
 								ProjectConfig.getProperty("TestResult.ResultFileDatePostfix"))
 						+ ".html";
 				Instant start = Instant.now();
-				runs.get(m.getName()).resultFilePath = testReportFilePath;
-				runs.get(m.getName()).startStamp = start;
-				runs.get(m.getName()).testStatus = TestRunStatus.In_Progress;
+				runs.get(curTest.getName()).resultFilePath = testReportFilePath;
+				runs.get(curTest.getName()).startStamp = start;
+				runs.get(curTest.getName()).testStatus = TestRunStatus.In_Progress;
 
 				String resultFileHeaderPart2 = "\n<script>\ndocument.getElementById('testName').innerText = '"
 						+ testDetails.get("Test Name") + "'\n" + "document.getElementById('TestCaseId').innerText = '"
-						+ m.getName() + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
+						+ curTest.getName() + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
 						+ "document.getElementById('MachineName').innerText = '"
 						+ InetAddress.getLocalHost().getHostName() + "'\n"
 						+ "document.getElementById('ALMID').innerText = '" + testDetails.get("ALM ID") + "'\n"
 						+ "document.getElementById('Starttime').innerText = '"
 						+ DateAndTime.formatAsString(start, "YYYY-MM-dd hh:mm:ss a") + "'\n</script>\n"
-						+ "<table id='stepsSummary'>\n" + "<thead><tr>\n<th>Step Name</th>\n"
-						+ "<th>Description</th>\n<th>Result</th>\n<th>Time</th>\n</tr></thead>\n<tbody id='steps'>\n";
+						+ "<table id='stepsSummary'>\n" + "<thead><tr>\n<th>Step</th>\n"
+						+ "<th>Details</th>\n<th>Result</th>\n<th>Time</th>\n</tr></thead>\n<tbody id='steps'>\n";
 
 				//log.info(resultFileHeaderPart2);
 				FilesUtil.writeToFile(testReportFilePath, resultFileHeaderPart1 + resultFileHeaderPart2);
@@ -68,10 +69,48 @@ public class Reporter {
 
 	}
 
-	public static void closeReport(Method m) {
+	public static void reportStep(String step, String details, StepStatus status) {
+		String stepData = "";
+		TestRunInfo curTestRunInfo = runs.get(Thread.currentThread().getName());
+		if (curTestRunInfo == null) {
+			return;
+		}
+
+		switch (status) {
+		case PASS:
+			stepData = "<tr class='Pass'><td>" + step + "</td><td>" + details
+					+ "</td><td><span style=\"color: transparent;  text-shadow: 0 0 0 green; \" >&#10004;</span></td><td>"
+					+ DateAndTime.formatAsString(new Date(), "hh:mm:ss") + "</td></tr>";
+			curTestRunInfo.passCount++;
+			break;
+
+		case FAIL:
+			stepData = "<tr class='Fail'><td>" + step + "</td><td>" + details + "</td><td>&#10060;</td><td>"
+					+ DateAndTime.formatAsString(new Date(), "hh:mm:ss") + "</td></tr>";
+			curTestRunInfo.failCount++;
+			break;
+			
+		case INFO:
+			stepData = "<tr class='Fail'><td>" + step + "</td><td>" + details + "</td><td>&#8505;</td><td>"
+					+ DateAndTime.formatAsString(new Date(), "hh:mm:ss") + "</td></tr>";
+			break;
+
+		default:
+			break;
+		}
+
 		try {
-			log.info("Closing report for test "+m.getName());
-			TestRunInfo curTestRunInfo = runs.get(m.getName());
+			FilesUtil.writeToFile(curTestRunInfo.resultFilePath, stepData, true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public static void closeReport(Method curTest) {
+		try {
+			log.info("Closing report for test "+curTest.getName());
+			TestRunInfo curTestRunInfo = runs.get(curTest.getName());
 			if (curTestRunInfo == null) {
 				return;
 			}
@@ -114,6 +153,6 @@ public class Reporter {
 	}
 
 	public static void main(String[] args) {
-		System.out.println();
+		reportStep("sadfasdf", "asdfasdfas", StepStatus.PASS);
 	}
 }

@@ -74,18 +74,18 @@
     </style>
     <script>
         function fn_FilterResults(value) {
-            var resultRows = document.getElementById('steps').getElementsByTagName("tr");
-            for (var i = 0; i < resultRows.length; i++) {
-                var indx = resultRows[i].getElementsByTagName('td')[2].getAttribute('class').indexOf(value);
-                if(value == "All"){
-                    resultRows[i].style.display = "";
-                } else if (indx >= 0) {
-                    resultRows[i].style.display = "";
-                } else {
-                    resultRows[i].style.display = "none";
-                }
-            }
-        }
+				var resultRows = document.getElementById('steps').getElementsByTagName("tr");
+				for (var i = 0; i < resultRows.length; i++) {
+					var indx = resultRows[i].getAttribute('class').indexOf(value);
+					if(value == "All"){
+						resultRows[i].style.display = "";
+					} else if (indx >= 0) {
+						resultRows[i].style.display = "";
+					} else {
+						resultRows[i].style.display = "none";
+					}
+				}
+			}
     </script>
 </head>
 
