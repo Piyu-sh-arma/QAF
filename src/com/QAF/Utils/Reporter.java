@@ -28,6 +28,10 @@ public class Reporter {
 
 	}
 
+	/************************************************
+	 * Purpose - Initialize test execution report
+	 * @Copyright - Piyush Sharma
+	 *************************************************/
 	public static void initialzeReport() {
 		String sourceFile = ProjectConfig.getProperty("TestResult.SourceHTML");
 		if (FilesUtil.fileExist(sourceFile)) {
@@ -70,6 +74,10 @@ public class Reporter {
 
 	}
 
+	/************************************************
+	 * Purpose - Add step in test report
+	 * @Copyright - Piyush Sharma
+	 *************************************************/
 	public static void reportStep(String step, String details, StepStatus status) {
 		String stepData = "";
 		TestRunInfo curTestRunInfo = runs.get(Thread.currentThread().getName());
@@ -108,6 +116,11 @@ public class Reporter {
 		}
 
 	}
+	
+	/************************************************
+	 * Purpose - Close test execution report
+	 * @Copyright - Piyush Sharma
+	 *************************************************/
 	public static void closeReport() {
 		try {
 			String tstId = Thread.currentThread().getName();
