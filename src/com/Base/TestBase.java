@@ -5,6 +5,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.testng.annotations.AfterClass;
@@ -21,17 +22,19 @@ public class TestBase {
 	private static final Logger log = Logger.getLogger(TestBase.class);
   
   @BeforeMethod(alwaysRun = true)
-  public void beforeMethod(Method m) {
-	 Thread.currentThread().setName(m.getName());
-	  log.info("Executing Before Method for test - "+m.getName());
-	  Reporter.initialzeReport(m);
-	  
-  }
+	public void beforeMethod(Object[] tstParams) {
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> data = (HashMap<String, String>) tstParams[0];
+		Thread.currentThread().setName(data.get("TestCaseId"));
+		log.info("Executing Before Method for test - " + data.get("TestCaseId"));
+		Reporter.initialzeReport();
+
+	}
 
   @AfterMethod(alwaysRun = true)
   public void afterMethod(Method m) {
 	  log.info("Executing After Method for test - "+m.getName());
-	  Reporter.closeReport(m);
+	  Reporter.closeReport();
   }
 
   @BeforeClass

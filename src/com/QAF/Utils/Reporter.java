@@ -28,27 +28,28 @@ public class Reporter {
 
 	}
 
-	public static void initialzeReport(Method curTest) {
+	public static void initialzeReport() {
 		String sourceFile = ProjectConfig.getProperty("TestResult.SourceHTML");
 		if (FilesUtil.fileExist(sourceFile)) {
 			try {
-				log.info("Initiating report for test "+Thread.currentThread().getName());
+				String tstId = Thread.currentThread().getName();
+				log.info("Initiating report for test "+tstId);
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
-				HashMap<String, String> testDetails = FWDataManager.getTestData(curTest.getName());
-				runs.put(curTest.getName(), new TestRunInfo());
+				HashMap<String, String> testDetails = FWDataManager.getTestData(tstId);
+				runs.put(tstId, new TestRunInfo());
 
-				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + curTest.getName() + "_"
+				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + tstId + "_"
 						+ DateAndTime.formatAsString(new Date(),
 								ProjectConfig.getProperty("TestResult.ResultFileDatePostfix"))
 						+ ".html";
 				Instant start = Instant.now();
-				runs.get(curTest.getName()).resultFilePath = testReportFilePath;
-				runs.get(curTest.getName()).startStamp = start;
-				runs.get(curTest.getName()).testStatus = TestRunStatus.In_Progress;
+				runs.get(tstId).resultFilePath = testReportFilePath;
+				runs.get(tstId).startStamp = start;
+				runs.get(tstId).testStatus = TestRunStatus.In_Progress;
 
 				String resultFileHeaderPart2 = "\n<script>\ndocument.getElementById('testName').innerText = '"
 						+ testDetails.get("Test Name") + "'\n" + "document.getElementById('TestCaseId').innerText = '"
-						+ curTest.getName() + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
+						+ tstId + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
 						+ "document.getElementById('MachineName').innerText = '"
 						+ InetAddress.getLocalHost().getHostName() + "'\n"
 						+ "document.getElementById('ALMID').innerText = '" + testDetails.get("ALM ID") + "'\n"
@@ -107,10 +108,11 @@ public class Reporter {
 		}
 
 	}
-	public static void closeReport(Method curTest) {
+	public static void closeReport() {
 		try {
-			log.info("Closing report for test "+curTest.getName());
-			TestRunInfo curTestRunInfo = runs.get(curTest.getName());
+			String tstId = Thread.currentThread().getName();
+			log.info("Closing report for test "+tstId);
+			TestRunInfo curTestRunInfo = runs.get(tstId);
 			if (curTestRunInfo == null) {
 				return;
 			}

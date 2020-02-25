@@ -3,3 +3,4 @@
 /htmlResults/**
 *.log
 /target/
+.classpath
