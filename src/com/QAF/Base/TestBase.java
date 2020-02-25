@@ -1,4 +1,4 @@
-package com.Base;
+package com.QAF.Base;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;

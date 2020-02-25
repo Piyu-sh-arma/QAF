@@ -3,9 +3,9 @@ package com.TestSuits;
 import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
-import com.App.pages.MyPage;
-import com.Base.TestBase;
+import com.QAF.Base.TestBase;
 import com.QAF.Utils.FWDataManager;
+import com.QAF.pages.MyPage;
 
 import bsh.This;
 
