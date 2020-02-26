@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeTest;
 
-import com.QAF.Utils.FWDataManager;
+import com.QAF.Utils.DataManager;
 import com.QAF.Utils.Reporter;
 
 import org.testng.annotations.AfterTest;
@@ -20,10 +20,11 @@ import org.testng.annotations.AfterSuite;
 
 public class TestBase {
 	private static final Logger log = Logger.getLogger(TestBase.class);
-  
-  @BeforeMethod(alwaysRun = true)
+
+	@SuppressWarnings("unchecked")
+	@BeforeMethod(alwaysRun = true)
 	public void beforeMethod(Object[] tstParams) {
-		@SuppressWarnings("unchecked")
+
 		HashMap<String, String> data = (HashMap<String, String>) tstParams[0];
 		Thread.currentThread().setName(data.get("TestCaseId"));
 		log.info("Executing Before Method for test - " + data.get("TestCaseId"));
@@ -31,34 +32,34 @@ public class TestBase {
 
 	}
 
-  @AfterMethod(alwaysRun = true)
-  public void afterMethod(Method m) {
-	  log.info("Executing After Method for test - "+m.getName());
-	  Reporter.closeReport();
-  }
+	@AfterMethod(alwaysRun = true)
+	public void afterMethod(Method m) {
+		log.info("Executing After Method for test - " + Thread.currentThread().getName());
+		Reporter.closeReport();
+	}
 
-  @BeforeClass
-  public void beforeClass() {
-  }
+	@BeforeClass
+	public void beforeClass() {
+	}
 
-  @AfterClass
-  public void afterClass() {
-  }
+	@AfterClass
+	public void afterClass() {
+	}
 
-  @BeforeTest
-  public void beforeTest() {
-  }
+	@BeforeTest
+	public void beforeTest() {
+	}
 
-  @AfterTest
-  public void afterTest() {
-  }
+	@AfterTest
+	public void afterTest() {
+	}
 
-  @BeforeSuite
-  public void beforeSuite() {
-  }
+	@BeforeSuite
+	public void beforeSuite() {
+	}
 
-  @AfterSuite
-  public void afterSuite() {
-  }
+	@AfterSuite
+	public void afterSuite() {
+	}
 
 }

@@ -39,7 +39,7 @@ public class Reporter {
 				String tstId = Thread.currentThread().getName();
 				log.info("Initiating report for test "+tstId);
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
-				HashMap<String, String> testDetails = FWDataManager.getTestData(tstId);
+				HashMap<String, String> testDetails = DataManager.getData(tstId);
 				runs.put(tstId, new TestRunInfo());
 
 				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + tstId + "_"
@@ -62,7 +62,6 @@ public class Reporter {
 						+ "<table id='stepsSummary'>\n" + "<thead><tr>\n<th>Step</th>\n"
 						+ "<th>Details</th>\n<th>Result</th>\n<th>Time</th>\n</tr></thead>\n<tbody id='steps'>\n";
 
-				//log.info(resultFileHeaderPart2);
 				FilesUtil.writeToFile(testReportFilePath, resultFileHeaderPart1 + resultFileHeaderPart2);
 
 			} catch (IOException e) {
@@ -84,7 +83,7 @@ public class Reporter {
 		if (curTestRunInfo == null) {
 			return;
 		}
-
+		curTestRunInfo.totalStepCount++;
 		switch (status) {
 		case PASS:
 			stepData = "<tr class='Pass'><td>" + step + "</td><td>" + details
@@ -134,14 +133,12 @@ public class Reporter {
 
 			String tstStatus;
 
-			if (curTestRunInfo.testStatus == TestRunStatus.Failed) {
+			if (curTestRunInfo.failCount > 0) {
 				tstStatus = "Failed";
 			} else if (curTestRunInfo.totalStepCount == 0) {
 				tstStatus = "Not Completed";
-				curTestRunInfo.testStatus = TestRunStatus.Not_Completed;
 			} else {
 				tstStatus = "Passed";
-				curTestRunInfo.testStatus = TestRunStatus.Passed;
 			}
 
 			int PassPercent = 0, FailPercent = 0;

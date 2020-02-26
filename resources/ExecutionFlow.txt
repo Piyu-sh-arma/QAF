@@ -1,0 +1,9 @@
+1.	Settings are saved in Config.properties file.
+2.	Execution begins from TestNG.xml (Test Suites)
+3.	IExecutionListener->OnExecutionStart is invoked. 
+	a.	Config.properties file is loaded.
+	b.	Data Source is cached into a map 
+4.	From TestBase class, @BeforeMethod function initializes html reporting for test.
+5.	@Test methods are executed and steps are updated in html report.
+6.	@AfterMethod is invoked and html report is closed.
+

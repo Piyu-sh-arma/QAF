@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite" parallel="methods">
 	<listeners>
-		<listener class-name="com.QAF.Utils.QWAFListerners" />
+		<listener class-name="com.QAF.Utils.QAFListerners" />
 	</listeners>
 	<test name="Test" preserve-order="true">
 		<classes>

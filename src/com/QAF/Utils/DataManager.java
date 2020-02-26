@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.testng.annotations.DataProvider;
 
+import com.QAF.FWExceptions.ExecutionException;
 import com.QAF.annotations.QAFInput;
 import com.SupportUtils.ExcelUtil;
 
@@ -17,9 +18,9 @@ import com.SupportUtils.ExcelUtil;
  * @author Piyush
  *
  */
-public class FWDataManager {
+public class DataManager {
 
-	private static final Logger log = Logger.getLogger(FWDataManager.class);
+	private static final Logger log = Logger.getLogger(DataManager.class);
 	static HashMap<String, HashMap<String, String>> map = null;
 
 	/************************************************
@@ -51,17 +52,17 @@ public class FWDataManager {
 	@DataProvider(name = "ExcelProvider")
 	public static Object[][] getData(Method m) {		
 		if(!m.isAnnotationPresent(QAFInput.class)) {
-			throw new RuntimeException(
-					"Data Key not available for Test : " + m.getName() + ". Please add @TestKey annotation to test");
+			throw new ExecutionException(
+					"Data Key not available for Test : " + m.getName() + ". Please add @TestKey annotation.");
 		}
 		String unqKey = m.getAnnotation(QAFInput.class).key();
 		if (unqKey.isEmpty()) {
-			throw new RuntimeException("Empty key for Test : " + m.getName());
+			throw new ExecutionException("Empty key for Test : " + m.getName());
 		}
 		log.info("Data requested for Test : " + unqKey);
 		if (!map.containsKey(unqKey)) {
 			log.error("Data not available for Test : " + unqKey);
-			throw new RuntimeException("Data not available for Test : " + unqKey);
+			throw new ExecutionException("Data not available for Test : " + unqKey);
 		}
 		HashMap<String, String> dataMap = map.get(unqKey);
 		log.info("Returning data for Test : " + unqKey + " ->" + dataMap);
@@ -75,7 +76,7 @@ public class FWDataManager {
 	 * Puspose - 
 	 * @Copyright - Piyush Sharma
 	 *************************************************/
-	public static HashMap<String, String> getTestData(String testKey) {
+	public static HashMap<String, String> getData(String testKey) {
 		if (map != null) {
 			if (map.containsKey(testKey)) {
 				return map.get(testKey);
@@ -88,7 +89,7 @@ public class FWDataManager {
 
 	
 	public static void main(String[] args) {
-		System.out.println(getTestData("f1"));
+		System.out.println(getData("f1"));
 	}
 	 
 
