@@ -6,14 +6,10 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.testng.annotations.DataProvider;
 
-import com.QAF.FWExceptions.ExecutionException;
+import com.QAF.Exceptions.ExecutionException;
 import com.QAF.annotations.QAFInput;
 import com.SupportUtils.ExcelUtil;
 
-/**
- * @author Piyush
- *
- */
 /**
  * @author Piyush
  *
@@ -25,7 +21,7 @@ public class DataManager {
 
 	/************************************************
 	 * Puspose - 
-	 * @Copyright - Piyush Sharma
+	 * 
 	 *************************************************/
 	public static void initDataFromSource() {
 		String source = ProjectConfig.getProperty("TestData.Source").trim().toUpperCase();
@@ -47,7 +43,7 @@ public class DataManager {
 	
 	/************************************************
 	 * Purpose - Provider method for testNg.
-	 * @Copyright - Piyush Sharma
+	 * 
 	 *************************************************/
 	@DataProvider(name = "ExcelProvider")
 	public static Object[][] getData(Method m) {		
@@ -74,7 +70,7 @@ public class DataManager {
 	
 	/************************************************
 	 * Puspose - 
-	 * @Copyright - Piyush Sharma
+	 * 
 	 *************************************************/
 	public static HashMap<String, String> getData(String testKey) {
 		if (map != null) {
