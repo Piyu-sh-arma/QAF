@@ -15,12 +15,12 @@ import java.util.HashMap;
 public class AppTests extends QAFTest {
 	private static final Logger log = Logger.getLogger(This.class);
 	
-	@QAFInput(key = "TestKey1")
+	@QAFInput(key = "T_Key_1")
 	@Test(dataProvider = "ExcelProvider", dataProviderClass = DataTransformer.class)
 	public void f1(HashMap<String, String> data) {
 		try {
 			Reporter.reportStep("Step1", "Test2 Details", StepStatus.PASS);
-			Reporter.reportStep("Step2", "Test2 Details", StepStatus.FAIL);
+			Reporter.reportStep("Step2", "Test2 Details", StepStatus.PASS);
 		} catch (Exception e) {
 			Reporter.reportStep("End", "Test Failed due to follwing exception -" + e.getLocalizedMessage(),
 					StepStatus.FAIL);
@@ -29,7 +29,7 @@ public class AppTests extends QAFTest {
 		}
 	}
 	
-	@QAFInput(key = "TestKey2")
+	@QAFInput(key = "T_Key_2")
 	@Test(dataProvider = "ExcelProvider", dataProviderClass = DataTransformer.class)
 	public void f2(HashMap<String, String> data) {
 		try {

@@ -155,7 +155,7 @@ public class Reporter {
 					+ "document.getElementById('ExecutionTime').innerText = '"
 					+ DateAndTime.getDuation(timeTaken, TimeUnit.SECONDS) + "'\n"
 					+ "document.getElementById('status').innerText = '"+tstStatus+"'\n" + "</script>\n</body>\n</html>";
-			System.out.println(resultFileFooter);
+//			System.out.println(resultFileFooter);
 			FilesUtil.writeToFile(curTestRunInfo.resultFilePath, resultFileFooter, true);
 			log.info("Closed report - "+curTestRunInfo.resultFilePath);
 		} catch (Exception e) {
