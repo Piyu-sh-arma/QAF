@@ -14,9 +14,9 @@ import com.SupportUtils.ExcelUtil;
  * @author Piyush
  *
  */
-public class DataManager {
+public class DataTransformer {
 
-	private static final Logger log = Logger.getLogger(DataManager.class);
+	private static final Logger log = Logger.getLogger(DataTransformer.class);
 	static HashMap<String, HashMap<String, String>> map = null;
 
 	/************************************************
@@ -80,8 +80,6 @@ public class DataManager {
 		}
 		return null;
 	}
-
-	
 
 	
 	public static void main(String[] args) {

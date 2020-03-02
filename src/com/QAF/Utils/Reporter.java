@@ -36,24 +36,24 @@ public class Reporter {
 		String sourceFile = ProjectConfig.getProperty("TestResult.SourceHTML");
 		if (FilesUtil.fileExist(sourceFile)) {
 			try {
-				String tstId = Thread.currentThread().getName();
-				log.info("Initiating report for test "+tstId);
+				String tstKey = Thread.currentThread().getName();
+				log.info("Initiating report for test "+tstKey);
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
-				HashMap<String, String> testDetails = DataManager.getData(tstId);
-				runs.put(tstId, new TestRunInfo());
+				HashMap<String, String> testDetails = DataTransformer.getData(tstKey);
+				runs.put(tstKey, new TestRunInfo());
 
-				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + tstId + "_"
+				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + tstKey + "_"
 						+ DateAndTime.formatAsString(new Date(),
 								ProjectConfig.getProperty("TestResult.ResultFileDatePostfix"))
 						+ ".html";
 				Instant start = Instant.now();
-				runs.get(tstId).resultFilePath = testReportFilePath;
-				runs.get(tstId).startStamp = start;
-				runs.get(tstId).testStatus = TestRunStatus.In_Progress;
+				runs.get(tstKey).resultFilePath = testReportFilePath;
+				runs.get(tstKey).startStamp = start;
+				runs.get(tstKey).testStatus = TestRunStatus.In_Progress;
 
 				String resultFileHeaderPart2 = "\n<script>\ndocument.getElementById('testName').innerText = '"
 						+ testDetails.get("Test Name") + "'\n" + "document.getElementById('TestCaseId').innerText = '"
-						+ tstId + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
+						+ tstKey + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
 						+ "document.getElementById('MachineName').innerText = '"
 						+ InetAddress.getLocalHost().getHostName() + "'\n"
 						+ "document.getElementById('ALMID').innerText = '" + testDetails.get("ALM ID") + "'\n"

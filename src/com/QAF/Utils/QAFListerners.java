@@ -18,7 +18,7 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 	@Override
 	public void onExecutionStart() {
 		log.info("<---- Starting TestNG Execution ---->");		
-		DataManager.initDataFromSource();
+		DataTransformer.initDataFromSource();
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 			if (testMethod.isAnnotationPresent(QAFInput.class)) {
 				unqKey = testMethod.getAnnotation(QAFInput.class).key();
 				if (!unqKey.isEmpty()) {
-					HashMap<String, String> map = DataManager.getData(unqKey);
+					HashMap<String, String> map = DataTransformer.getData(unqKey);
 					if (map != null) {
 						if (map.get("Execution Flag").equalsIgnoreCase("NO")) {
 							annotation.setEnabled(false);
