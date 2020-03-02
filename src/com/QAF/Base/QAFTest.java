@@ -18,16 +18,16 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.AfterSuite;
 
-public class TestBase {
-	private static final Logger log = Logger.getLogger(TestBase.class);
+public class QAFTest {
+	private static final Logger log = Logger.getLogger(QAFTest.class);
 
 	@SuppressWarnings("unchecked")
 	@BeforeMethod(alwaysRun = true)
 	public void beforeMethod(Object[] tstParams) {
 
 		HashMap<String, String> data = (HashMap<String, String>) tstParams[0];
-		Thread.currentThread().setName(data.get("TestCaseId"));
-		log.info("Executing Before Method for test - " + data.get("TestCaseId"));
+		Thread.currentThread().setName(data.get("TestKey"));
+		log.info("Executing Before Method for test - " + data.get("TestKey"));
 		Reporter.initialzeReport();
 
 	}
@@ -37,29 +37,6 @@ public class TestBase {
 		log.info("Executing After Method for test - " + Thread.currentThread().getName());
 		Reporter.closeReport();
 	}
-
-	@BeforeClass
-	public void beforeClass() {
-	}
-
-	@AfterClass
-	public void afterClass() {
-	}
-
-	@BeforeTest
-	public void beforeTest() {
-	}
-
-	@AfterTest
-	public void afterTest() {
-	}
-
-	@BeforeSuite
-	public void beforeSuite() {
-	}
-
-	@AfterSuite
-	public void afterSuite() {
-	}
+	
 
 }

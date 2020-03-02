@@ -52,7 +52,7 @@ public class Reporter {
 				runs.get(tstKey).testStatus = TestRunStatus.In_Progress;
 
 				String resultFileHeaderPart2 = "\n<script>\ndocument.getElementById('testName').innerText = '"
-						+ testDetails.get("Test Name") + "'\n" + "document.getElementById('TestCaseId').innerText = '"
+						+ testDetails.get("Test Name") + "'\n" + "document.getElementById('TestKey').innerText = '"
 						+ tstKey + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
 						+ "document.getElementById('MachineName').innerText = '"
 						+ InetAddress.getLocalHost().getHostName() + "'\n"
