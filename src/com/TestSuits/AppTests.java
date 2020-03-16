@@ -8,12 +8,11 @@ import com.QAF.Utils.Reporter;
 import com.QAF.annotations.QAFInput;
 import com.SupportUtils.StepStatus;
 
-import bsh.This;
 
 import java.util.HashMap;
 
 public class AppTests extends QAFTest {
-	private static final Logger log = Logger.getLogger(This.class);
+	private static final Logger log = Logger.getLogger(AppTests.class);
 	
 	@QAFInput(key = "T_Key_1")
 	@Test(dataProvider = "ExcelProvider", dataProviderClass = DataTransformer.class)
