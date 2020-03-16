@@ -2,21 +2,11 @@ package com.QAF.Base;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeTest;
-
-import com.QAF.Utils.DataTransformer;
 import com.QAF.Utils.Reporter;
-
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.AfterSuite;
 
 public class QAFTest {
 	private static final Logger log = Logger.getLogger(QAFTest.class);
