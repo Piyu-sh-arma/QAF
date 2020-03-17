@@ -17,13 +17,13 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 
 	@Override
 	public void onExecutionStart() {
-		log.info("<---- Starting TestNG Execution ---->");		
+		log.info(">>>>>>>>>>>>> Starting Execution...");		
 		DataTransformer.initDataFromSource();
 	}
 
 	@Override
 	public void onExecutionFinish() {
-		// TODO Auto-generated method stub
+		log.info("Finished Execution!! <<<<<<<<<<<<");	
 
 	}
 
