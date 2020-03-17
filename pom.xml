@@ -13,7 +13,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<source.dir>${project.basedir}</source.dir>
+		<source.dir>${project.basedir}\src</source.dir>
+		<output.dir>${project.basedir}\bin</output.dir>
 	</properties>
 
 	<dependencies>
@@ -62,25 +63,24 @@
 
 	</dependencies>
 	<build>
-		<sourceDirectory>${project.basedir}\src</sourceDirectory>
-		<outputDirectory>${project.basedir}\bin</outputDirectory>
+		<sourceDirectory>${source.dir}</sourceDirectory>
+		<outputDirectory>${output.dir}</outputDirectory>
 		<scriptSourceDirectory>${project.basedir}\scripts</scriptSourceDirectory>
-		<testSourceDirectory>${project.basedir}\src</testSourceDirectory>
-		<testOutputDirectory>${project.basedir}\bin</testOutputDirectory>
+		<testSourceDirectory>${source.dir}</testSourceDirectory>
+		<testOutputDirectory>${output.dir}</testOutputDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.5</version>
+
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>${source.dir}\test-output</directory>
+							<directory>${project.basedir}\test-output</directory>
 							<includes>*/**</includes>
 						</fileset>
-						<fileset>
-							<directory>${source.dir}\htmlResults</directory>
-							<includes>*/**</includes>
-						</fileset>
+						<!-- <fileset> <directory>${source.dir}\htmlResults</directory> <includes>*/**</includes> 
+							</fileset> -->
 					</filesets>
 				</configuration>
 			</plugin>
