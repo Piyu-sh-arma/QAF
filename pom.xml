@@ -68,6 +68,14 @@
 		<scriptSourceDirectory>${project.basedir}\scripts</scriptSourceDirectory>
 		<testSourceDirectory>${source.dir}</testSourceDirectory>
 		<testOutputDirectory>${output.dir}</testOutputDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<includes>
+					<include>log4j.properties</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
