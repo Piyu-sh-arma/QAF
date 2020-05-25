@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.testng.annotations.DataProvider;
 
 import com.QAF.Exceptions.ExecutionException;
-import com.QAF.annotations.QAFInput;
+import com.QAF.annotations.QAFTest;
 import com.SupportUtils.ExcelUtil;
 
 /**
@@ -20,15 +20,15 @@ public class DataTransformer {
 	static HashMap<String, HashMap<String, String>> map = null;
 
 	/************************************************
-	 * Puspose - 
+	 * Purpose - 
 	 * 
 	 *************************************************/
 	public static void initDataFromSource() {
-		String source = ProjectConfig.getProperty("TestData.Source").trim().toUpperCase();
+		String source = QAFConfig.getProperty("TestData.Source").trim().toUpperCase();
 		switch (source) {
 		case "EXCEL":
-			String testDataFilePath = ProjectConfig.getProperty("TestData.ExcelFilePath");
-			String testSheetName = ProjectConfig.getProperty("TestData.ExcelTestSheetName");
+			String testDataFilePath = QAFConfig.getProperty("TestData.ExcelFilePath");
+			String testSheetName = QAFConfig.getProperty("TestData.ExcelTestSheetName");
 			map = ExcelUtil.loadExcelData(testDataFilePath, testSheetName);
 			break;
 		case "CSV":
@@ -39,19 +39,17 @@ public class DataTransformer {
 			break;
 		}
 	}
-	
-	
+
 	/************************************************
 	 * Purpose - Provider method for testNg.
 	 * 
 	 *************************************************/
 	@DataProvider(name = "ExcelProvider")
-	public static Object[][] getData(Method m) {		
-		if(!m.isAnnotationPresent(QAFInput.class)) {
-			throw new ExecutionException(
-					"Data Key not available for Test : " + m.getName() + ". Please add @TestKey annotation.");
+	public static Object[][] getData(Method m) {
+		if (!m.isAnnotationPresent(QAFTest.class)) {
+			throw new ExecutionException("Data Key not available for Test : " + m.getName() + ". Please add @TestKey annotation.");
 		}
-		String unqKey = m.getAnnotation(QAFInput.class).key();
+		String unqKey = m.getAnnotation(QAFTest.class).key();
 		if (unqKey.isEmpty()) {
 			throw new ExecutionException("Empty key for Test : " + m.getName());
 		}
@@ -65,9 +63,7 @@ public class DataTransformer {
 		return new Object[][] { { dataMap } };
 
 	}
-	
-	
-	
+
 	/************************************************
 	 * Puspose - 
 	 * 
@@ -81,10 +77,8 @@ public class DataTransformer {
 		return null;
 	}
 
-	
 	public static void main(String[] args) {
 		System.out.println(getData("f1"));
 	}
-	 
 
 }

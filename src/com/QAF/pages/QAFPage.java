@@ -24,5 +24,10 @@ public abstract class QAFPage {
 		log.info("Page Object =>"+Thread.currentThread().getName());
 		
 	}
+	
+	public void startApp() {
+		
+		
+	}
 
 }

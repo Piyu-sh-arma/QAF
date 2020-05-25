@@ -7,11 +7,14 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.testng.IAnnotationTransformer;
 import org.testng.IExecutionListener;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
 import org.testng.annotations.ITestAnnotation;
 
-import com.QAF.annotations.QAFInput;
+import com.QAF.Driver.Service.QAFDriverService;
+import com.QAF.annotations.QAFTest;
 
-public class QAFListerners implements IExecutionListener, IAnnotationTransformer {
+public class QAFListerners implements IExecutionListener, IAnnotationTransformer, ISuiteListener {
 	
 	private static final Logger log = Logger.getLogger(QAFListerners.class);
 
@@ -31,8 +34,8 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 	public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
 		if (null != testMethod) {
 			String unqKey = testMethod.getName();
-			if (testMethod.isAnnotationPresent(QAFInput.class)) {
-				unqKey = testMethod.getAnnotation(QAFInput.class).key();
+			if (testMethod.isAnnotationPresent(QAFTest.class)) {
+				unqKey = testMethod.getAnnotation(QAFTest.class).key();
 				if (!unqKey.isEmpty()) {
 					HashMap<String, String> map = DataTransformer.getData(unqKey);
 					if (map != null) {
@@ -49,6 +52,21 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 
 		}
 
+	}
+
+	@Override
+	public void onStart(ISuite suite) {
+		log.info("Starting Test Suite - "+suite.getName());	
+		QAFDriverService.startChromeService();
+//		QAFDriverService.startIEService();
+//		QAFDriverService.startEdgeService();
+		
+	}
+
+	@Override
+	public void onFinish(ISuite suite) {
+		QAFDriverService.stopChromeService();
+		
 	}
 
 }

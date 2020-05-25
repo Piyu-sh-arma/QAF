@@ -17,10 +17,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtil {
-	
+
 	private static final Logger log = Logger.getLogger(ExcelUtil.class);
-	
-	public static HashMap<String, HashMap<String, String>> loadExcelData(String testDataFilePath,String testSheetName) {
+
+	public static HashMap<String, HashMap<String, String>> loadExcelData(String testDataFilePath, String testSheetName) {
 		Workbook wb = null;
 		Sheet sheet;
 		HashMap<String, HashMap<String, String>> map = new HashMap<String, HashMap<String, String>>();
@@ -40,7 +40,7 @@ public class ExcelUtil {
 			throw new RuntimeException("Test Sheet name is Empty. Check TestData.ExcelTestSheetName value in QAFConfig.properties");
 		}
 		try {
-			log.info("Attempting to load data from "+ testDataFilePath);
+			log.info("Attempting to load data from " + testDataFilePath);
 			if (testDataFilePath.toUpperCase().contains("XLSX")) {
 				wb = new XSSFWorkbook(new FileInputStream(xlFile));
 			} else {
@@ -48,7 +48,7 @@ public class ExcelUtil {
 			}
 			sheet = wb.getSheet(testSheetName);
 			if (sheet == null) {
-				log.error("Test Sheet " + testSheetName + " , is not found in Test data file.");				
+				log.error("Test Sheet " + testSheetName + " , is not found in Test data file.");
 				wb.close();
 				log.info("Data file closed, " + testDataFilePath);
 				throw new RuntimeException("Test Sheet " + testSheetName + " , is not found in Test data file.");
@@ -56,7 +56,7 @@ public class ExcelUtil {
 
 			int intRowCount = sheet.getLastRowNum();
 			int intColCount = sheet.getRow(0).getLastCellNum();
-			log.info("Excel file has "+intRowCount+"-Rows & " + intColCount + "-Coulumns" );
+			log.info("Excel file has " + intRowCount + "-Rows & " + intColCount + "-Coulumns");
 			ArrayList<String> paramList = new ArrayList<String>();
 			for (int i = 0; i < intColCount; i++) {
 				Row curRow = sheet.getRow(0);
@@ -85,7 +85,7 @@ public class ExcelUtil {
 				wb.close();
 				log.info("Data file closed, " + testDataFilePath);
 			} catch (IOException e1) {
-				if(e1.getLocalizedMessage().contains("file because it is being used")) {
+				if (e1.getLocalizedMessage().contains("file because it is being used")) {
 					log.info("File is being used already. Opened in ready only mode");
 				}
 				log.error(e1.getLocalizedMessage());

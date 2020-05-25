@@ -1,42 +1,48 @@
 package com.TestSuits;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
-import com.QAF.Base.QAFTest;
+import com.QAF.Base.QAFBaseTest;
+import com.QAF.Driver.Options.QAFDriverManager;
 import com.QAF.Utils.DataTransformer;
 import com.QAF.Utils.Reporter;
-import com.QAF.annotations.QAFInput;
+import com.QAF.annotations.QAFTest;
 import com.SupportUtils.StepStatus;
-
 
 import java.util.HashMap;
 
-public class AppTests extends QAFTest {
+public class AppTests extends QAFBaseTest {
 	private static final Logger log = Logger.getLogger(AppTests.class);
-	
-	@QAFInput(key = "T_Key_1")
+
+	@QAFTest(key = "T_Key_1")
 	@Test(dataProvider = "ExcelProvider", dataProviderClass = DataTransformer.class)
 	public void f1(HashMap<String, String> data) {
 		try {
-			Reporter.reportStep("Step1", "Test2 Details", StepStatus.PASS);
-			Reporter.reportStep("Step2", "Test2 Details", StepStatus.PASS);
+			QAFDriverManager qafDriverManager = new QAFDriverManager();
+			WebDriver driver = qafDriverManager.getDriver();
+			driver.get("http://www.google.com");
+			System.out.println(driver.getTitle());
+			Reporter.reportStep("Step1", driver.getTitle(), StepStatus.PASS);
+			driver.quit();
 		} catch (Exception e) {
-			Reporter.reportStep("End", "Test Failed due to follwing exception -" + e.getLocalizedMessage(),
-					StepStatus.FAIL);
-			log.error(e.getStackTrace());
+			Reporter.reportStep("End", "Test Failed due to follwing exception -" + e.getLocalizedMessage(), StepStatus.FAIL);
+			e.printStackTrace();
 
 		}
 	}
-	
-	@QAFInput(key = "T_Key_2")
+
+	@QAFTest(key = "T_Key_2")
 	@Test(dataProvider = "ExcelProvider", dataProviderClass = DataTransformer.class)
 	public void f2(HashMap<String, String> data) {
 		try {
-			Reporter.reportStep("Step1", "Test1 Details", StepStatus.PASS);
-			Reporter.reportStep("Step2", "Test1 Details", StepStatus.FAIL);
+			QAFDriverManager qafDriverManager = new QAFDriverManager();
+			WebDriver driver = qafDriverManager.getDriver();
+			driver.get("http://thedemosite.co.uk/addauser.php");
+			System.out.println(driver.getTitle());
+			Reporter.reportStep("Step1", driver.getTitle(), StepStatus.FAIL);
 		} catch (Exception e) {
-			Reporter.reportStep("End", "Test Failed due to follwing exception -" + e.getLocalizedMessage(),
-					StepStatus.FAIL);
+			Reporter.reportStep("End", "Test Failed due to follwing exception -" + e.getLocalizedMessage(), StepStatus.FAIL);
 			log.error(e.getStackTrace());
 
 		}

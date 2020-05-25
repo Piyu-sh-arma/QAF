@@ -33,34 +33,27 @@ public class Reporter {
 	 * @Copyright - Piyush Sharma
 	 *************************************************/
 	public static void initialzeReport() {
-		String sourceFile = ProjectConfig.getProperty("TestResult.SourceHTML");
+		String sourceFile = QAFConfig.getProperty("TestResult.SourceHTML");
 		if (FilesUtil.fileExist(sourceFile)) {
 			try {
 				String tstKey = Thread.currentThread().getName();
-				log.info("Initiating report for test "+tstKey);
+				log.info("Initiating report for test " + tstKey);
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
 				HashMap<String, String> testDetails = DataTransformer.getData(tstKey);
 				runs.put(tstKey, new TestRunInfo());
 
-				String testReportFilePath = ProjectConfig.getProperty("TestResult.Directory") + "/" + tstKey + "_"
-						+ DateAndTime.formatAsString(new Date(),
-								ProjectConfig.getProperty("TestResult.ResultFileDatePostfix"))
-						+ ".html";
+				String testReportFilePath = QAFConfig.getProperty("TestResult.Directory") + "/" + tstKey + "_"
+						+ DateAndTime.formatAsString(new Date(), QAFConfig.getProperty("TestResult.ResultFileDatePostfix")) + ".html";
 				Instant start = Instant.now();
 				runs.get(tstKey).resultFilePath = testReportFilePath;
 				runs.get(tstKey).startStamp = start;
 				runs.get(tstKey).testStatus = TestRunStatus.In_Progress;
 
-				String resultFileHeaderPart2 = "\n<script>\ndocument.getElementById('testName').innerText = '"
-						+ testDetails.get("Test Name") + "'\n" + "document.getElementById('TestKey').innerText = '"
-						+ tstKey + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
-						+ "document.getElementById('MachineName').innerText = '"
-						+ InetAddress.getLocalHost().getHostName() + "'\n"
-						+ "document.getElementById('ALMID').innerText = '" + testDetails.get("ALM ID") + "'\n"
-						+ "document.getElementById('Starttime').innerText = '"
-						+ DateAndTime.formatAsString(start, "YYYY-MM-dd hh:mm:ss a") + "'\n</script>\n"
-						+ "<table id='stepsSummary'>\n" + "<thead><tr>\n<th>Step</th>\n"
-						+ "<th>Details</th>\n<th>Result</th>\n<th>Time</th>\n</tr></thead>\n<tbody id='steps'>\n";
+				String resultFileHeaderPart2 = "\n<script>\ndocument.getElementById('testName').innerText = '" + testDetails.get("Test Name") + "'\n"
+						+ "document.getElementById('TestKey').innerText = '" + tstKey + "'\n" + "document.getElementById('status').innerText = 'In Progress'\n"
+						+ "document.getElementById('MachineName').innerText = '" + InetAddress.getLocalHost().getHostName() + "'\n" + "document.getElementById('ALMID').innerText = '"
+						+ testDetails.get("ALM ID") + "'\n" + "document.getElementById('Starttime').innerText = '" + DateAndTime.formatAsString(start, "YYYY-MM-dd hh:mm:ss a") + "'\n</script>\n"
+						+ "<table id='stepsSummary'>\n" + "<thead><tr>\n<th>Step</th>\n" + "<th>Details</th>\n<th>Result</th>\n<th>Time</th>\n</tr></thead>\n<tbody id='steps'>\n";
 
 				FilesUtil.writeToFile(testReportFilePath, resultFileHeaderPart1 + resultFileHeaderPart2);
 
@@ -86,21 +79,18 @@ public class Reporter {
 		curTestRunInfo.totalStepCount++;
 		switch (status) {
 		case PASS:
-			stepData = "<tr class='Pass'><td>" + step + "</td><td>" + details
-					+ "</td><td><span style=\"color: transparent;  text-shadow: 0 0 0 green; \" >&#10004;</span></td><td>"
+			stepData = "<tr class='Pass'><td>" + step + "</td><td>" + details + "</td><td><span style=\"color: transparent;  text-shadow: 0 0 0 green; \" >&#10004;</span></td><td>"
 					+ DateAndTime.formatAsString(new Date(), "hh:mm:ss") + "</td></tr>";
 			curTestRunInfo.passCount++;
 			break;
 
 		case FAIL:
-			stepData = "<tr class='Fail'><td>" + step + "</td><td>" + details + "</td><td>&#10060;</td><td>"
-					+ DateAndTime.formatAsString(new Date(), "hh:mm:ss") + "</td></tr>";
+			stepData = "<tr class='Fail'><td>" + step + "</td><td>" + details + "</td><td>&#10060;</td><td>" + DateAndTime.formatAsString(new Date(), "hh:mm:ss") + "</td></tr>";
 			curTestRunInfo.failCount++;
 			break;
-			
+
 		case INFO:
-			stepData = "<tr class='Fail'><td>" + step + "</td><td>" + details + "</td><td>&#8505;</td><td>"
-					+ DateAndTime.formatAsString(new Date(), "hh:mm:ss") + "</td></tr>";
+			stepData = "<tr class='Fail'><td>" + step + "</td><td>" + details + "</td><td>&#8505;</td><td>" + DateAndTime.formatAsString(new Date(), "hh:mm:ss") + "</td></tr>";
 			break;
 
 		default:
@@ -115,7 +105,7 @@ public class Reporter {
 		}
 
 	}
-	
+
 	/************************************************
 	 * Purpose - Close test execution report
 	 * @Copyright - Piyush Sharma
@@ -123,7 +113,7 @@ public class Reporter {
 	public static void closeReport() {
 		try {
 			String tstId = Thread.currentThread().getName();
-			log.info("Closing report for test "+tstId);
+			log.info("Closing report for test " + tstId);
 			TestRunInfo curTestRunInfo = runs.get(tstId);
 			if (curTestRunInfo == null) {
 				return;
@@ -147,21 +137,17 @@ public class Reporter {
 				FailPercent = 100 - PassPercent;
 			}
 
-			String resultFileFooter = "</tbody>\n</table>\n<script>\n"
-					+ "document.getElementById('PassSteps').innerText = '" + PassPercent + "'\n"
-					+ "document.getElementById('FailSteps').innerText = '" + FailPercent + "'\n"
-					+ "document.getElementById('Endtime').innerText = '"
-					+ DateAndTime.formatAsString(curTestRunInfo.endStamp, "YYYY-MM-dd hh:mm:ss a") + "'\n"
-					+ "document.getElementById('ExecutionTime').innerText = '"
-					+ DateAndTime.getDuation(timeTaken, TimeUnit.SECONDS) + "'\n"
-					+ "document.getElementById('status').innerText = '"+tstStatus+"'\n" + "</script>\n</body>\n</html>";
-//			System.out.println(resultFileFooter);
+			String resultFileFooter = "</tbody>\n</table>\n<script>\n" + "document.getElementById('PassSteps').innerText = '" + PassPercent + "'\n"
+					+ "document.getElementById('FailSteps').innerText = '" + FailPercent + "'\n" + "document.getElementById('Endtime').innerText = '"
+					+ DateAndTime.formatAsString(curTestRunInfo.endStamp, "YYYY-MM-dd hh:mm:ss a") + "'\n" + "document.getElementById('ExecutionTime').innerText = '"
+					+ DateAndTime.getDuation(timeTaken, TimeUnit.SECONDS) + "'\n" + "document.getElementById('status').innerText = '" + tstStatus + "'\n" + "</script>\n</body>\n</html>";
+			//			System.out.println(resultFileFooter);
 			FilesUtil.writeToFile(curTestRunInfo.resultFilePath, resultFileFooter, true);
-			log.info("Closed report - "+curTestRunInfo.resultFilePath);
+			log.info("Closed report - " + curTestRunInfo.resultFilePath);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
+
 	}
 
 	public static void main(String[] args) {
