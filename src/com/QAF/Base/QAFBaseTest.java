@@ -18,7 +18,7 @@ public abstract class QAFBaseTest {
 	@BeforeMethod(alwaysRun = true)
 	public void beforeMethod(Object[] tstParams) {
 		HashMap<String, String> data = (HashMap<String, String>) tstParams[0];
-		Thread.currentThread().setName(data.get("TestKey"));
+		Thread.currentThread().setName(Thread.currentThread().getId() + "~_" + data.get("TestKey"));
 		log.info("Executing Before Method for test - " + data.get("TestKey"));
 		Reporter.initialzeReport();
 
@@ -26,11 +26,9 @@ public abstract class QAFBaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void afterMethod(Method m) {
-		log.info("Executing After Method for test - " + Thread.currentThread().getName());
+		log.info("Executing After Method for test - " + Thread.currentThread().getName().split("~_")[1]);
 		Reporter.closeReport();
-		WebDriver driver = QAFDriverManager.driverMap.get(Thread.currentThread().getId());
-		if(null != driver)
-			driver.quit();
+		QAFDriverManager.quitDriver();
 	}
 
 }

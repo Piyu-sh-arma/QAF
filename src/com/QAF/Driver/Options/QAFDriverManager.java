@@ -75,4 +75,15 @@ public class QAFDriverManager {
 		return driver;
 	}
 
+	public static void quitDriver() {
+		WebDriver driver = driverMap.get(Thread.currentThread().getId());
+		if (null != driver) {
+			driver.quit();
+			log.info("Driver quitted for test : " + Thread.currentThread().getName().split("~_")[1]);
+		} else {
+			log.error("Couldn't find driver for test : " + Thread.currentThread().getName().split("~_")[1]);
+		}
+
+	}
+
 }

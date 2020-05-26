@@ -33,7 +33,7 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 	@Override
 	public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
 		if (null != testMethod) {
-			String unqKey = testMethod.getName();
+			String unqKey = "";
 			if (testMethod.isAnnotationPresent(QAFTest.class)) {
 				unqKey = testMethod.getAnnotation(QAFTest.class).key();
 				if (!unqKey.isEmpty()) {
@@ -58,14 +58,15 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 	public void onStart(ISuite suite) {
 		log.info("Starting Test Suite - " + suite.getName());
 		boolean gridEnabled = Boolean.parseBoolean(QAFConfig.getProperty("Grid.Enabled"));
-		
+
 		// if Grid is enabled then don't start any local services for Browsers
 		if (gridEnabled)
 			log.info("Grid is enabled.");
-		else
+		else {
 			QAFDriverService.startChromeService();
-		//			QAFDriverService.startIEService();
-		//			QAFDriverService.startEdgeService();
+			// QAFDriverService.startIEService();
+			// QAFDriverService.startEdgeService();
+		}
 
 	}
 
