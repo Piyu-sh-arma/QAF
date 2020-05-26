@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriver;
+
+import com.QAF.Driver.Options.QAFDriverManager;
 import com.QAF.Utils.Reporter;
 
 public abstract class QAFBaseTest {
@@ -14,7 +17,6 @@ public abstract class QAFBaseTest {
 	@SuppressWarnings("unchecked")
 	@BeforeMethod(alwaysRun = true)
 	public void beforeMethod(Object[] tstParams) {
-
 		HashMap<String, String> data = (HashMap<String, String>) tstParams[0];
 		Thread.currentThread().setName(data.get("TestKey"));
 		log.info("Executing Before Method for test - " + data.get("TestKey"));
@@ -26,6 +28,9 @@ public abstract class QAFBaseTest {
 	public void afterMethod(Method m) {
 		log.info("Executing After Method for test - " + Thread.currentThread().getName());
 		Reporter.closeReport();
+		WebDriver driver = QAFDriverManager.driverMap.get(Thread.currentThread().getId());
+		if(null != driver)
+			driver.quit();
 	}
 
 }

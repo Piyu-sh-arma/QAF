@@ -15,18 +15,18 @@ import com.QAF.Driver.Service.QAFDriverService;
 import com.QAF.annotations.QAFTest;
 
 public class QAFListerners implements IExecutionListener, IAnnotationTransformer, ISuiteListener {
-	
+
 	private static final Logger log = Logger.getLogger(QAFListerners.class);
 
 	@Override
 	public void onExecutionStart() {
-		log.info(">>>>>>>>>>>>> Starting Execution...");		
+		log.info(">>>>>>>>>>>>> Starting Execution...");
 		DataTransformer.initDataFromSource();
 	}
 
 	@Override
 	public void onExecutionFinish() {
-		log.info("Finished Execution!! <<<<<<<<<<<<");	
+		log.info("Finished Execution!! <<<<<<<<<<<<");
 
 	}
 
@@ -46,7 +46,7 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 				}
 
 			}
-			if(!annotation.getEnabled()) {
+			if (!annotation.getEnabled()) {
 				log.info("Test Id-" + unqKey + " is excluded from execution");
 			}
 
@@ -56,17 +56,23 @@ public class QAFListerners implements IExecutionListener, IAnnotationTransformer
 
 	@Override
 	public void onStart(ISuite suite) {
-		log.info("Starting Test Suite - "+suite.getName());	
-		QAFDriverService.startChromeService();
-//		QAFDriverService.startIEService();
-//		QAFDriverService.startEdgeService();
+		log.info("Starting Test Suite - " + suite.getName());
+		boolean gridEnabled = Boolean.parseBoolean(QAFConfig.getProperty("Grid.Enabled"));
 		
+		// if Grid is enabled then don't start any local services for Browsers
+		if (gridEnabled)
+			log.info("Grid is enabled.");
+		else
+			QAFDriverService.startChromeService();
+		//			QAFDriverService.startIEService();
+		//			QAFDriverService.startEdgeService();
+
 	}
 
 	@Override
 	public void onFinish(ISuite suite) {
 		QAFDriverService.stopChromeService();
-		
+
 	}
 
 }
