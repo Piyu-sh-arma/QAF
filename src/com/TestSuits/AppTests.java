@@ -11,6 +11,8 @@ import com.QAF.Utils.Reporter;
 import com.QAF.annotations.QAFTest;
 import com.SupportUtils.StepStatus;
 
+import static org.testng.Assert.assertEquals;
+
 import java.util.HashMap;
 
 public class AppTests extends QAFBaseTest {
@@ -31,6 +33,9 @@ public class AppTests extends QAFBaseTest {
 			log.error("Exception Occoured", e);
 
 		}
+		if (Reporter.hasTestFailed())
+			assertEquals(true, false, "Test run failed");
+
 	}
 
 	@QAFTest(key = "T_Key_2")
@@ -45,8 +50,11 @@ public class AppTests extends QAFBaseTest {
 		} catch (Exception e) {
 			Reporter.reportStep("End", "Test Failed due to follwing exception -" + e.getLocalizedMessage(), StepStatus.FAIL);
 			log.error("Exception Occoured", e);
+			assertEquals(true, false,"Test run failed");
 
 		}
+		if (Reporter.hasTestFailed())
+			assertEquals(true, false, "Test run failed");
 
 	}
 }

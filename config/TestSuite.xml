@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" parallel="tests">
+<suite name="Suite" parallel="none">
 	<listeners>
 		<listener class-name="com.QAF.Utils.QAFListerners" />
 	</listeners>
@@ -9,6 +9,7 @@
 			<class name="com.TestSuits.AppTests">
 				<methods>
 					<include name="f1" />
+					<include name="f2" />
 				</methods>
 			</class>
 		</classes>

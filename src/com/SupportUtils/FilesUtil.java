@@ -12,7 +12,11 @@ public class FilesUtil {
 	}
 
 	public static boolean folderExist(String path) {
-		return (new File(path).isDirectory());
+		try {
+			return (new File(path).isDirectory());
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	public static String readFile(String path) throws IOException {

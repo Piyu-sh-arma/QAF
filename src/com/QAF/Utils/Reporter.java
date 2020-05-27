@@ -28,7 +28,7 @@ public class Reporter {
 
 	/************************************************
 	 * Purpose - Initialize test execution report
-	 * @Copyright - Piyush Sharma
+	 * @Author - Piyush Sharma
 	 *************************************************/
 	public static void initialzeReport() {
 		String sourceFile = QAFConfig.getProperty("TestResult.SourceHTML");
@@ -40,8 +40,11 @@ public class Reporter {
 				String resultFileHeaderPart1 = FilesUtil.readFile(sourceFile);
 				HashMap<String, String> testDetails = DataTransformer.getData(tstKey);
 				runs.put(tstRunKey, new TestRunInfo());
+				String testResultDir = QAFConfig.getProperty("TestResult.Directory");
+				if (!FilesUtil.folderExist(testResultDir))
+					testResultDir = "./htmlResults";
 
-				String testReportFilePath = QAFConfig.getProperty("TestResult.Directory") + "/" + tstKey + "_"
+				String testReportFilePath = testResultDir + "/" + tstKey + "_"
 						+ DateAndTime.formatAsString(new Date(), QAFConfig.getProperty("TestResult.ResultFileDatePostfix")) + "_" + RandomNumber.getInt(100) + ".html";
 				Instant start = Instant.now();
 				runs.get(tstRunKey).resultFilePath = testReportFilePath;
@@ -68,7 +71,7 @@ public class Reporter {
 
 	/************************************************
 	 * Purpose - Add step in test report
-	 * @Copyright - Piyush Sharma
+	 * @Author - Piyush Sharma
 	 *************************************************/
 	public static void reportStep(String step, String details, StepStatus status) {
 		String stepData = "";
@@ -89,6 +92,7 @@ public class Reporter {
 			stepData = "<tr class='Fail'><td>" + step + "</td><td>" + details + "</td><td>&#10060;</td><td>" + DateAndTime.formatAsString(new Date(), "hh:mm:ss")
 					+ "</td></tr>";
 			curTestRunInfo.failCount++;
+			curTestRunInfo.testStatus = TestRunStatus.Failed;
 			break;
 
 		case INFO:
@@ -111,7 +115,7 @@ public class Reporter {
 
 	/************************************************
 	 * Purpose - Close test execution report
-	 * @Copyright - Piyush Sharma
+	 * @Author - Piyush Sharma
 	 *************************************************/
 	public static void closeReport() {
 		try {
@@ -158,4 +162,18 @@ public class Reporter {
 	public static void main(String[] args) {
 		reportStep("sadfasdf", "asdfasdfas", StepStatus.PASS);
 	}
+
+	/************************************************
+	 * Purpose - Check if test has failed
+	 * @Author - Piyush Sharma
+	 *************************************************/
+	public static boolean hasTestFailed() {
+		TestRunInfo curTestRunInfo = runs.get(Thread.currentThread().getName());
+		if (curTestRunInfo == null || curTestRunInfo.testStatus == TestRunStatus.Failed)
+			return true;
+		else
+			return false;
+
+	}
+
 }

@@ -2,6 +2,9 @@ package com.QAF.Base;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
+
+import static org.testng.Assert.assertEquals;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -29,6 +32,7 @@ public abstract class QAFBaseTest {
 		log.info("Executing After Method for test - " + Thread.currentThread().getName().split("~_")[1]);
 		Reporter.closeReport();
 		QAFDriverManager.quitDriver();
+		
 	}
 
 }
