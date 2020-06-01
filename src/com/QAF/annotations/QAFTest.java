@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface QAFTest {
-	public String key() default "";
-	public String browser() default "";
+	String key() default "";
+	String browser() default "";
 
 }

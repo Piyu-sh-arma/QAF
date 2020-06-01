@@ -10,9 +10,9 @@ public class QAFEdgeOptions {
 	private static EdgeOptions edgeOps = null;
 	private static final Logger log = Logger.getLogger(QAFEdgeOptions.class);
 	
-	private QAFEdgeOptions() {};
+	private QAFEdgeOptions() {}
 
-	public static void loadOptions() {
+    public static void loadOptions() {
 		edgeOps = new EdgeOptions();
 		System.setProperty("webdriver.edge.driver",QAFConfig.getProperty("webdriver.edge.driver"));
 		try {

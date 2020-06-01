@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 public class QAFConfig {
 	private static final Logger log = Logger.getLogger(QAFConfig.class);
-	private static Properties config;
+	private static final Properties config;
 	static {
 		config = new Properties();
 		try {

@@ -23,7 +23,7 @@ public class ExcelUtil {
 	public static HashMap<String, HashMap<String, String>> loadExcelData(String testDataFilePath, String testSheetName) {
 		Workbook wb = null;
 		Sheet sheet;
-		HashMap<String, HashMap<String, String>> map = new HashMap<String, HashMap<String, String>>();
+		HashMap<String, HashMap<String, String>> map = new HashMap<>();
 
 		if (testDataFilePath == null || testSheetName == null) {
 			log.error("Test Data file parameters are empty. Check properties file");
@@ -57,7 +57,7 @@ public class ExcelUtil {
 			int intRowCount = sheet.getLastRowNum();
 			int intColCount = sheet.getRow(0).getLastCellNum();
 			log.info("Excel file has " + intRowCount + "-Rows & " + intColCount + "-Coulumns");
-			ArrayList<String> paramList = new ArrayList<String>();
+			ArrayList<String> paramList = new ArrayList<>();
 			for (int i = 0; i < intColCount; i++) {
 				Row curRow = sheet.getRow(0);
 				Cell curCell = curRow.getCell(i);

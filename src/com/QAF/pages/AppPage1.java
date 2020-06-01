@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.QAF.pages;
 
 import org.openqa.selenium.WebDriver;

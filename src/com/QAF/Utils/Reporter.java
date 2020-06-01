@@ -22,7 +22,7 @@ public class Reporter {
 	private static final Logger log = Logger.getLogger(Reporter.class);
 	public static ConcurrentHashMap<String, TestRunInfo> runs;
 	static {
-		runs = new ConcurrentHashMap<String, TestRunInfo>();
+		runs = new ConcurrentHashMap<>();
 
 	}
 
@@ -169,10 +169,7 @@ public class Reporter {
 	 *************************************************/
 	public static boolean hasTestFailed() {
 		TestRunInfo curTestRunInfo = runs.get(Thread.currentThread().getName());
-		if (curTestRunInfo == null || curTestRunInfo.testStatus == TestRunStatus.Failed)
-			return true;
-		else
-			return false;
+        return curTestRunInfo == null || curTestRunInfo.testStatus == TestRunStatus.Failed;
 
 	}
 

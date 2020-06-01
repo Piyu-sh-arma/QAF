@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.QAF.Driver.Options;
 
 import java.net.MalformedURLException;
@@ -24,7 +21,7 @@ public class QAFDriverManager {
 	private static final Logger log = Logger.getLogger(QAFDriverManager.class);
 	private WebDriver driver = null;
 	String browserName;
-	public static Map<Long, WebDriver> driverMap = new HashMap<Long, WebDriver>();
+	public static Map<Long, WebDriver> driverMap = new HashMap<>();
 
 	public QAFDriverManager(String browserName) {
 		this.browserName = browserName.toUpperCase();

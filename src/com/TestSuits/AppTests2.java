@@ -1,29 +1,19 @@
 package com.TestSuits;
 
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.Test;
 
 import com.QAF.Base.QAFBaseTest;
-import com.QAF.Driver.Options.QAFEdgeOptions;
-import com.QAF.Driver.Options.QAFIEOptions;
 import com.QAF.Utils.DataTransformer;
 import com.QAF.Utils.QAFConfig;
 import com.QAF.annotations.QAFTest;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 
 public class AppTests2 extends QAFBaseTest {

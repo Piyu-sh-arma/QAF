@@ -3,13 +3,10 @@ package com.QAF.Base;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 
-import static org.testng.Assert.assertEquals;
-
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 
 import com.QAF.Driver.Options.QAFDriverManager;
 import com.QAF.Utils.Reporter;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" parallel="none">
+<suite name="Suite">
 	<listeners>
 		<listener class-name="com.QAF.Utils.QAFListerners" />
 	</listeners>
-	<test name="Test1" preserve-order="true">
+	<test name="Test1">
 		<classes>
 			<class name="com.TestSuits.AppTests">
 				<methods>

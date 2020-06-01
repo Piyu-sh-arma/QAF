@@ -47,9 +47,8 @@ public class DateAndTime {
 		default:
 			break;
 		}
-		;
 
-		if (hours > 24) {
+        if (hours > 24) {
 			days = hours / 24;
 			hours = hours % 24;
 		}

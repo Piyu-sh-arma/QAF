@@ -51,9 +51,9 @@ public class QAFDriverService {
 	}
 
 	private QAFDriverService() {
-	};
+	}
 
-	public static void startChromeService() {
+    public static void startChromeService() {
 		try {
 			String driverExePath = QAFConfig.getProperty("webdriver.chrome.driver");
 			if (chromeDriverService == null)
