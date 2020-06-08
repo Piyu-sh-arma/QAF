@@ -2,14 +2,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
 	<listeners>
-		<listener class-name="com.QAF.Utils.QAFListerners" />
+		<listener class-name="com.qaf.utils.QAFListerners" />
 	</listeners>
 	<test name="Test1">
 		<classes>
-			<class name="com.TestSuits.AppTests">
+			<class name="com.testSuits.AppTests">
 				<methods>
 					<include name="f1" />
-					<include name="f2" />
 				</methods>
 			</class>
 		</classes>
