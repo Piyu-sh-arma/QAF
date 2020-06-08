@@ -96,8 +96,8 @@ public class QAFElement implements IWebComponent {
                 else
                     return null;
             });
-
         }
+        log.info("Element having " + with.toString() + " = " + value+" is located");
         return ele;
     }
 
@@ -219,7 +219,7 @@ public class QAFElement implements IWebComponent {
     }
 
     public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
-        return ((TakesScreenshot) this.initElement()).getScreenshotAs(target);
+        return this.initElement().getScreenshotAs(target);
     }
 
     public WebElement getWrappedElement() {
@@ -237,10 +237,7 @@ public class QAFElement implements IWebComponent {
 
     public boolean waitForVisible() {
         Wait<QAFElement> wait = new QAFWait<>(this);
-        Boolean result = wait.until(element -> {
-            return element.initElement().isDisplayed();
-        });
-        return result;
+        return wait.until(element1 -> element1.initElement().isDisplayed());
     }
 
     public void verifyVisible() {

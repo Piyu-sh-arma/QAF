@@ -1,16 +1,12 @@
 package com.qaf.utils;
 
 import com.qaf.annotations.Find;
-import com.qaf.component.QAFElement;
 import com.qaf.component.With;
-import jdk.nashorn.internal.objects.NativeDebug;
 import org.openqa.selenium.WebDriver;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
-import java.util.Arrays;
 
 public class QAFPageFactory {
     public static <T> void initElements(WebDriver parent, T pageObject) {
@@ -24,11 +20,7 @@ public class QAFPageFactory {
                 try {
                     Constructor fieldClassConstructor = field.getType().getConstructor(WebDriver.class, With.class, String.class);
                     field.set(pageObject, fieldClassConstructor.newInstance(parent, with, value));
-                } catch (IllegalAccessException | NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
+                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
                     e.printStackTrace();
                 }
 
@@ -37,7 +29,7 @@ public class QAFPageFactory {
 
     }
 
-    public static <T1> void initElements(T1 componentObject) {
+    public static <T> void initElements(T componentObject) {
         Class componentClass = componentObject.getClass();
         Field[] allFields = componentClass.getDeclaredFields();
         for (Field field : allFields) {
@@ -48,9 +40,7 @@ public class QAFPageFactory {
                 try {
                     Constructor fieldClassConstructor = field.getType().getConstructor(field.getType(), With.class, String.class);
                     field.set(componentObject, fieldClassConstructor.newInstance(componentObject, with, value));
-                } catch (IllegalAccessException | NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                     e.printStackTrace();
                 } catch (InstantiationException e) {
                     e.printStackTrace();

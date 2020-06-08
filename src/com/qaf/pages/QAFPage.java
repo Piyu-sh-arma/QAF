@@ -1,5 +1,6 @@
 package com.qaf.pages;
 
+import com.qaf.utils.QAFConfig;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
@@ -23,6 +24,18 @@ public abstract class QAFPage {
 	public void display() {
 		log.info("Page Object =>"+Thread.currentThread().getName());
 		
+	}
+
+	public void startApplication(){
+		driver.get(getURL());
+	}
+
+	public String getURL(){
+		if(null == System.getProperty("ApplicationURL"))
+			return QAFConfig.getProperty("Application.url").trim();
+		else
+			return System.getProperty("ApplicationURL");
+
 	}
 
 }
