@@ -1,7 +1,7 @@
 package com.qaf.driver.options;
 
 import com.qaf.driver.service.QAFDriverService;
-import com.qaf.exceptions.ExecutionException;
+import com.qaf.exceptions.QAFException;
 import com.qaf.utils.QAFConfig;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -37,13 +37,13 @@ public class QAFDriverManager {
             URL remoteURL;
             if (gridEnabled) {
                 if (strGridURL.trim().isEmpty())
-                    throw new ExecutionException("Grid is enabled but Grid URL is empty");
+                    throw new QAFException("Grid is enabled but Grid URL is empty");
                 else {
                     try {
                         remoteURL = new URL(strGridURL);
                         log.info("Grid is enabled. URL -" + strGridURL);
                     } catch (MalformedURLException e) {
-                        throw new ExecutionException("Grid is enabled but Grid URL is not proper. " + strGridURL);
+                        throw new QAFException("Grid is enabled but Grid URL is not proper. " + strGridURL);
                     }
 
                 }
@@ -63,7 +63,7 @@ public class QAFDriverManager {
                     driver = new RemoteWebDriver(remoteURL, QAFEdgeOptions.getOptions());
                     break;
                 default:
-                    throw new ExecutionException(browserName + " is not supported");
+                    throw new QAFException(browserName + " is not supported");
             }
 
         }
@@ -76,7 +76,7 @@ public class QAFDriverManager {
         WebDriver driver = driverMap.get(Thread.currentThread().getId());
         if (null != driver) {
             driver.quit();
-            log.info("Driver quitted for test : " + Thread.currentThread().getName().split("~_")[1]);
+            log.info("Driver quited for test : " + Thread.currentThread().getName().split("~_")[1]);
         } else {
             log.error("Couldn't find driver for test : " + Thread.currentThread().getName().split("~_")[1]);
         }

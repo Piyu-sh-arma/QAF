@@ -20,7 +20,7 @@ public class DateAndTime {
 		return new SimpleDateFormat(format).format(Date.from(instant));
 	}
 
-	public static String getDuation(Long number, TimeUnit unit) {
+	public static String getDuration(Long number, TimeUnit unit) {
 
 		int hours = 0, mins = 0, sec = 0, days = 0;
 

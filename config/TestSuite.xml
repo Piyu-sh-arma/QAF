@@ -6,9 +6,9 @@
 	</listeners>
 	<test name="Test1">
 		<classes>
-			<class name="com.testSuits.AppTests">
+			<class name="com.app.testSuites.AppTests">
 				<methods>
-					<include name="f1" />
+					<include name="f2" />
 				</methods>
 			</class>
 		</classes>

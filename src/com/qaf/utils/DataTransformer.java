@@ -1,10 +1,10 @@
 package com.qaf.utils;
 
-import com.qaf.exceptions.ExecutionException;
 import com.qaf.annotations.QAFTest;
 import com.supportUtils.ExcelUtil;
 import org.apache.log4j.Logger;
 import org.testng.annotations.DataProvider;
+import com.qaf.exceptions.QAFException;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -46,16 +46,16 @@ public class DataTransformer {
 	@DataProvider(name = "ExcelProvider")
 	public static Object[][] getData(Method m) {
 		if (!m.isAnnotationPresent(QAFTest.class)) {
-			throw new ExecutionException("Data Key not available for Test : " + m.getName() + ". Please add @TestKey annotation.");
+			throw new QAFException("Data Key not available for Test : " + m.getName() + ". Please add @TestKey annotation.");
 		}
 		String unqKey = m.getAnnotation(QAFTest.class).key();
 		if (unqKey.isEmpty()) {
-			throw new ExecutionException("Empty key for Test : " + m.getName());
+			throw new QAFException("Empty key for Test : " + m.getName());
 		}
 		log.info("Data requested for Test : " + unqKey);
 		if (!map.containsKey(unqKey)) {
 			log.error("Data not available for Test : " + unqKey);
-			throw new ExecutionException("Data not available for Test : " + unqKey);
+			throw new QAFException("Data not available for Test : " + unqKey);
 		}
 		HashMap<String, String> dataMap = map.get(unqKey);
 		log.info("Returning data for Test : " + unqKey + " ->" + dataMap);
@@ -64,7 +64,7 @@ public class DataTransformer {
 	}
 
 	/************************************************
-	 * Puspose - 
+	 * Purpose -
 	 * 
 	 *************************************************/
 	public static HashMap<String, String> getData(String testKey) {

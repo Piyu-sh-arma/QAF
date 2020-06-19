@@ -6,7 +6,7 @@
 	</listeners>
 	<test name="Test">
 		<classes>
-			<class name="com.testSuits.AppTests2" />
+			<class name="com.app.testSuites.AppTests2" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

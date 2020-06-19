@@ -1,4 +1,4 @@
-package com.testSuits;
+package com.app.testSuites;
 
 import com.qaf.base.QAFBaseTest;
 import com.qaf.utils.DataTransformer;

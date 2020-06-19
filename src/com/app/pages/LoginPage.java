@@ -1,8 +1,10 @@
-package com.qaf.pages;
+package com.app.pages;
 
+import com.app.component.LogInForm;
 import com.qaf.annotations.Find;
 import com.qaf.component.QAFElement;
 import com.qaf.component.With;
+import com.qaf.base.QAFPage;
 import com.qaf.utils.QAFPageFactory;
 import org.openqa.selenium.WebDriver;
 

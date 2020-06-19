@@ -26,7 +26,7 @@ public class Reporter {
 	 * Purpose - Initialize test execution report
 	 * @Author - Piyush Sharma
 	 *************************************************/
-	public static void initialzeReport() {
+	public static void initializeReport() {
 		String sourceFile = QAFConfig.getProperty("TestResult.SourceHTML");
 		if (FilesUtil.fileExist(sourceFile)) {
 			try {
@@ -144,7 +144,7 @@ public class Reporter {
 			String resultFileFooter = "</tbody>\n</table>\n<script>\n" + "document.getElementById('PassSteps').innerText = '" + PassPercent + "'\n"
 					+ "document.getElementById('FailSteps').innerText = '" + FailPercent + "'\n" + "document.getElementById('Endtime').innerText = '"
 					+ DateAndTime.formatAsString(curTestRunInfo.endStamp, "YYYY-MM-dd hh:mm:ss a") + "'\n" + "document.getElementById('ExecutionTime').innerText = '"
-					+ DateAndTime.getDuation(timeTaken, TimeUnit.SECONDS) + "'\n" + "document.getElementById('status').innerText = '" + tstStatus + "'\n"
+					+ DateAndTime.getDuration(timeTaken, TimeUnit.SECONDS) + "'\n" + "document.getElementById('status').innerText = '" + tstStatus + "'\n"
 					+ "</script>\n</body>\n</html>";
 			//			System.out.println(resultFileFooter);
 			FilesUtil.writeToFile(curTestRunInfo.resultFilePath, resultFileFooter, true);

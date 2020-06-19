@@ -52,7 +52,7 @@ public class ExcelUtil {
 
 			int intRowCount = sheet.getLastRowNum();
 			int intColCount = sheet.getRow(0).getLastCellNum();
-			log.info("Excel file has " + intRowCount + "-Rows & " + intColCount + "-Coulumns");
+			log.info("Excel file has " + intRowCount + "-Rows & " + intColCount + "-Columns");
 			ArrayList<String> paramList = new ArrayList<>();
 			for (int i = 0; i < intColCount; i++) {
 				Row curRow = sheet.getRow(0);

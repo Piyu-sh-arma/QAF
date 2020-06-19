@@ -1,4 +1,4 @@
-package com.qaf.pages;
+package com.app.component;
 
 import com.qaf.annotations.Find;
 import com.qaf.component.QAFElement;
