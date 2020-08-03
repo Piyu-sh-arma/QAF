@@ -1,4 +1,4 @@
-package com.app.component;
+package com.app.htmlcomponents;
 
 import com.qaf.component.QAFElement;
 import com.qaf.component.With;

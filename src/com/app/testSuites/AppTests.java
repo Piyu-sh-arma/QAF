@@ -1,24 +1,21 @@
 package com.app.testSuites;
 
-import com.app.component.CheckBox;
-import com.app.component.RadioButton;
-import com.app.pages.CheckBoxDemo;
-import com.app.pages.RadioBtnDemo;
+import com.app.pages.*;
 import com.qaf.annotations.QAFTest;
 import com.qaf.base.QAFBaseTest;
 import com.qaf.driver.options.QAFDriverManager;
-import com.app.pages.HomePage;
-import com.app.pages.LoginPage;
 import com.qaf.utils.DataTransformer;
 import com.qaf.utils.Reporter;
 import com.supportUtils.StepStatus;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
 
 import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 public class AppTests extends QAFBaseTest {
     private static final Logger log = Logger.getLogger(AppTests.class);
@@ -29,6 +26,8 @@ public class AppTests extends QAFBaseTest {
         try {
             QAFDriverManager qafDriverManager = new QAFDriverManager();
             WebDriver driver = qafDriverManager.getDriver();
+            Actions action = new Actions(driver);
+            action.build().perform();
             HomePage homePage = new HomePage(driver);
             CheckBoxDemo chkBxDemo = new CheckBoxDemo(driver);
             homePage.startApplication();
@@ -74,7 +73,58 @@ public class AppTests extends QAFBaseTest {
 
         }
         if (Reporter.hasTestFailed())
-            assertTrue(false, "Test run failed");
+            fail("Test run failed");
+
+    }
+
+    @QAFTest(key = "T_Key_3")
+    @Test()
+    public void f3() {
+        try {
+            QAFDriverManager qafDriverManager = new QAFDriverManager();
+            WebDriver driver = qafDriverManager.getDriver();
+            HomePage homePage = new HomePage(driver);
+            DropDownListDemo ddListDemoPage = new DropDownListDemo(driver);
+            homePage.startApplication();
+            homePage.lnkBasicExmpl.click();
+            homePage.lnkDDListDemo.jsClick();
+            ddListDemoPage.ddLstMultiSelect.selectWithValue("New Jersey", "MultiSelect");
+            ddListDemoPage.ddLstMultiSelect.selectWithValue("New York", "MultiSelect");
+            ddListDemoPage.ddLstMultiSelect.getFirstSelectedOptionText();
+
+
+        } catch (Exception e) {
+            Reporter.reportStep("End", "Test Failed due to following exception -" + e.getLocalizedMessage(), StepStatus.FAIL);
+            log.error("Exception Occurred", e);
+
+        }
+        if (Reporter.hasTestFailed())
+            fail("Test run failed");
+
+    }
+
+    @QAFTest(key = "T_Key_4")
+    @Test()
+    public void f4() {
+        try {
+            QAFDriverManager qafDriverManager = new QAFDriverManager();
+            WebDriver driver = qafDriverManager.getDriver();
+            HomePage homePage = new HomePage(driver);
+            TableDemo tblDemoPage = new TableDemo(driver);
+            homePage.startApplication();
+            homePage.lnkAdvncExmpl.click();
+            homePage.lnkTblDemo.jsClick("Table Demo");
+            System.out.println(tblDemoPage.table.getColumnCount());
+            System.out.println(tblDemoPage.table.getColumnNames());
+            System.out.println(tblDemoPage.table.getRowsCount());
+
+        } catch (Exception e) {
+            Reporter.reportStep("End", "Test Failed due to following exception -" + e.getLocalizedMessage(), StepStatus.FAIL);
+            log.error("Exception Occurred", e);
+
+        }
+        if (Reporter.hasTestFailed())
+            fail("Test run failed");
 
     }
 }

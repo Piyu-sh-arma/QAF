@@ -1,26 +1,28 @@
 package com.qaf.component;
 
 import com.qaf.exceptions.QAFException;
+import com.qaf.exceptions.QAFTimeOutException;
 import com.qaf.utils.Reporter;
 import com.supportUtils.StepStatus;
 import org.apache.log4j.Logger;
-import org.omg.CORBA.TIMEOUT;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Locatable;
 import org.openqa.selenium.interactions.internal.Coordinates;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.Wait;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
 
-public class QAFElement<T extends QAFElement> implements IWebComponent {
+public class QAFElement<T extends QAFElement> implements IQAFElement {
     private T parentQAFElement = null;
     private WebDriver driver = null;
     private String value;
     private With with;
-    private WebElement element = null;
+    private WebElement webElement = null;
 
 
     private static final Logger logger = Logger.getLogger(QAFElement.class);
@@ -39,7 +41,7 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
 
 
     public QAFElement(WebElement element) {
-        this.element = element;
+        this.webElement = element;
     }
 
     public By getBy(With with, String value) {
@@ -85,8 +87,9 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
                     logger.info("Locating element having " + with.toString() + " = " + value);
                     return driver.findElement(getBy(with, value));
                 });
+                logger.info("Element having " + with.toString() + " = " + value + " is located : " + ((RemoteWebElement) ele).getId());
             } catch (TimeoutException exTO) {
-                throw new QAFException("Timeout while locating element having " + with.toString() + " = " + value);
+                throw new QAFTimeOutException("Timeout while locating element having " + with.toString() + " = " + value);
             }
         } else if (null != parentQAFElement) {
             WebElement parentWebElement = parentQAFElement.initElement();
@@ -96,25 +99,27 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
                     logger.info("Locating element having " + with.toString() + " = " + value);
                     return element.findElement(getBy(with, value));
                 });
+                logger.info("Element having " + with.toString() + " = " + value + " is located : " + ((RemoteWebElement) ele).getId());
             } catch (TimeoutException exTO) {
-                throw new QAFException("Timeout while locating element having " + with.toString() + " = " + value);
+                throw new QAFTimeOutException("Timeout while locating element having " + with.toString() + " = " + value);
             }
         } else {
-            Wait<WebElement> wait = new QAFWait<>(element);
+            Wait<WebElement> wait = new QAFWait<>(webElement);
             try {
                 ele = wait.until(element -> {
-                    if (element.isDisplayed() && element.isEnabled())
+                    if (element.getTagName().length() > 0)
                         return element;
                     else {
-                        logger.info("Waiting for WebElement to be visible");
+                        logger.info("Waiting for WebElement to be available");
                         return null;
                     }
                 });
+                logger.info("WebElement is located : " + ((RemoteWebElement) ele).getId());
             } catch (TimeoutException exTO) {
-                throw new QAFException("Timeout while locating webelement");
+                throw new QAFTimeOutException("Timeout while locating webelement");
             }
         }
-        logger.info("Element having " + with.toString() + " = " + value + " is located");
+
         return ele;
     }
 
@@ -124,16 +129,27 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
     }
 
     public List<QAFElement> findElements(With with, String value) {
+
         Wait<WebElement> wait = new QAFWait<>(this.initElement());
-        return wait.until(element1 -> {
-            List<WebElement> elements = element1.findElements(getBy(with, value));
-            if (!(elements.size() > 0))
-                return null;
-            List<QAFElement> qafElements = new ArrayList<>();
-            for (WebElement ele : elements)
-                qafElements.add(new QAFElement(ele));
-            return qafElements;
-        });
+        try {
+            return wait.until(parent -> {
+                List<QAFElement> qafElements = new ArrayList<>();
+                List<WebElement> elements = parent.findElements(getBy(with, value));
+                if (!(elements.size() > 0)) {
+                    logger.debug("Waiting for child elements having " + with.toString() + " = " + value);
+                    return null;
+                }
+                logger.info("Found " + elements.size() + " elements having " + with.toString() + " = " + value);
+                for (WebElement ele : elements)
+                    qafElements.add(new QAFElement(ele));
+                return qafElements;
+            });
+
+        } catch (TimeoutException ex) {
+            logger.info("Timeout while waiting for child elements having " + with.toString() + " = " + value);
+            return Collections.emptyList();
+        }
+
     }
 
     public WebElement getWrappedWebElement() {
@@ -150,24 +166,33 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
     }
 
     public void click() {
+        this.initElement().click();
+        logger.info("Element having " + with.toString() + " = " + value + " is clicked.");
+    }
+
+    public void click(String eleName) {
         try {
-            this.initElement().click();
-            logger.info("Element having " + with.toString() + " = " + value + " is clicked.");
+            this.click();
+            Reporter.reportStep("Click Element", eleName + " is clicked", StepStatus.PASS);
         } catch (Exception e) {
-            logger.info("Element having " + with.toString() + " = " + value + " is not clicked.");
-            logger.error(e.getStackTrace());
+            Reporter.reportStep("Click Element", eleName + " is not clicked", StepStatus.FAIL);
+            throw new QAFException("Failed to click on Element having " + with.toString() + " = " + value + ". Exception : " + e.getLocalizedMessage());
         }
 
     }
 
     public void jsClick() {
-        try {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", this.initElement());
-            logger.info("Element having " + with.toString() + " = " + value + " is clicked using java script");
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", this.initElement());
+        logger.info("Element having " + with.toString() + " = " + value + " is clicked using java script");
+    }
 
+    public void jsClick(String eleName) {
+        try {
+            this.jsClick();
+            Reporter.reportStep("Click Element", eleName + " is clicked using JavaScript", StepStatus.PASS);
         } catch (Exception e) {
-            logger.error("Element having " + with.toString() + " = " + value + " is not clicked using java script");
-            logger.error(e.getStackTrace());
+            Reporter.reportStep("Click Element", eleName + " is not clicked using JavaScript", StepStatus.FAIL);
+            throw new QAFException("Failed to click on Element having " + with.toString() + " = " + value + " using java script. Exception : " + e.getLocalizedMessage());
         }
 
     }
@@ -237,83 +262,117 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
         return driver;
     }
 
+    public boolean isPresent() {
+        try {
+            if (null != this.initElement()) {
+                logger.info("Element is present in page");
+                return true;
+            }
+        } catch (QAFTimeOutException ignore) {
+            logger.info("Element is not present in page");
+        }
+        return false;
+    }
 
-    public boolean waitForElementToBeVisible(long... waitForSeconds) {
+    public boolean waitForElementToBePresent(long... waitForSeconds) {
         Wait<QAFElement> wait = new QAFWait<>(this, waitForSeconds);
         Boolean result = false;
         try {
             result = wait.until(qafElement -> {
-                if (qafElement.initElement().isDisplayed()) {
-                    logger.info("Element is visible");
+                if (qafElement.isPresent()) {
+                    logger.info("Element is present page");
                     return true;
                 } else {
-                    logger.info("Waiting for element to be visible");
+                    logger.info("Waiting for element to be present in page");
                     return null;
                 }
-
             });
         } catch (TimeoutException exTO) {
-            logger.error("Timeout while waiting for element to be visible");
+            logger.error("Timeout while waiting for element to be displayed");
         }
         return result;
     }
 
-    public boolean waitForElementToBeInvisible(long... waitForSeconds) {
+    public boolean isDisplayed() {
+        try {
+            if (this.initElement().isDisplayed()) {
+                logger.info("Element is displayed");
+                return true;
+            }
+        } catch (QAFTimeOutException ignore) {
+            logger.info("Element is not displayed");
+        }
+        return false;
+    }
+
+    public boolean waitForElementToBeDisplayed(long... waitForSeconds) {
+        Wait<QAFElement> wait = new QAFWait<>(this, waitForSeconds);
+        Boolean result = false;
+        try {
+            result = wait.until(qafElement -> {
+                if (qafElement.isDisplayed()) {
+                    logger.info("Element is visible");
+                    return true;
+                } else {
+                    logger.info("Waiting for element to be displayed");
+                    return null;
+                }
+            });
+        } catch (TimeoutException exTO) {
+            logger.error("Timeout while waiting for element to be displayed");
+        }
+        return result;
+    }
+
+    public boolean waitForElementToBeNotDisplayed(long... waitForSeconds) {
         Wait<QAFElement> wait = new QAFWait<>(this, waitForSeconds);
         Boolean result = false;
         try {
             result = wait.until(new Function<QAFElement, Boolean>() {
                 @Override
                 public Boolean apply(QAFElement qafElement) {
-                    if (qafElement.initElement().isDisplayed()) {
-                        logger.info("Waiting for element to be invisible");
-                        return null;
-                    } else {
-                        logger.info("Element is invisible");
+                    if (!qafElement.isDisplayed()) {
+                        logger.info("Element is not displayed");
                         return true;
+                    } else {
+                        logger.info("Waiting for element to be not displayed");
+                        return null;
                     }
 
                 }
             });
-        } catch (TimeoutException exTO) {
-            logger.error("Timeout while waiting for element to be invisible");
+        } catch (QAFTimeOutException exTO) {
+            logger.error("Timeout while waiting for element to be displayed");
         }
         return result;
     }
 
-    public boolean isDisplayed() {
-        if (this.initElement().isDisplayed()) {
-            logger.info("Element is displayed");
-            return true;
-        } else {
-            logger.error("Element is not displayed");
-            return false;
-        }
-    }
-
-    public boolean isNotDisplayed() {
-        if (!this.initElement().isDisplayed()) {
-            logger.info("Element is not displayed");
-            return true;
-        } else {
-            logger.error("Element is displayed");
-            return false;
-        }
-
-    }
 
     public void verifyVisible(String eleName) {
-        if (this.waitForElementToBeVisible())
+        if (this.waitForElementToBeDisplayed())
             Reporter.reportStep("Verify element visible", eleName + " is visible", StepStatus.PASS);
         else
             Reporter.reportStep("Verify element visible", eleName + " is not visible", StepStatus.FAIL);
     }
 
     public void verifyInvisible(String eleName) {
-        if (this.waitForElementToBeInvisible())
+        if (this.waitForElementToBeNotDisplayed())
             Reporter.reportStep("Verify element visible", eleName + " is visible", StepStatus.PASS);
         else
             Reporter.reportStep("Verify element visible", eleName + " is not visible", StepStatus.FAIL);
+    }
+
+    public boolean isEnabled() {
+        try {
+            if (this.initElement().isEnabled()) {
+                logger.info("Element is enabled");
+                return true;
+            }
+        } catch (QAFTimeOutException ex) {
+            logger.error("Element is not enabled");
+        }
+
+        return false;
     }
 
     public boolean waitForElementToBeEnabled(long... waitForSeconds) {
@@ -323,7 +382,7 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
             result = wait.until(new Function<QAFElement, Boolean>() {
                 @Override
                 public Boolean apply(QAFElement qafElement) {
-                    if (qafElement.initElement().isEnabled()) {
+                    if (qafElement.isEnabled()) {
                         logger.info("Element is enabled");
                         return true;
                     } else {
@@ -346,12 +405,12 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
             result = wait.until(new Function<QAFElement, Boolean>() {
                 @Override
                 public Boolean apply(QAFElement qafElement) {
-                    if (qafElement.initElement().isEnabled()) {
-                        logger.info("Waiting for element to be disabled");
-                        return null;
-                    } else {
+                    if (!qafElement.isEnabled()) {
                         logger.info("Element is disabled");
                         return true;
+                    } else {
+                        logger.info("Waiting for element to be disabled");
+                        return null;
                     }
                 }
             });
@@ -361,25 +420,6 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
         return result;
     }
 
-    public boolean isEnabled() {
-        if (this.initElement().isEnabled()) {
-            logger.info("Element is enabled");
-            return true;
-        } else {
-            logger.error("Element is not enabled");
-            return false;
-        }
-    }
-
-    public boolean isDisabled() {
-        if (this.initElement().isEnabled()) {
-            logger.error("Element is enabled");
-            return false;
-        } else {
-            logger.info("Element is not enabled");
-            return true;
-        }
-    }
 
     public void verifyEnabled(String eleName) {
         if (this.waitForElementToBeEnabled())
@@ -393,6 +433,16 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
             Reporter.reportStep("Verify element disabled", eleName + " is disabled", StepStatus.PASS);
         else
             Reporter.reportStep("Verify element disabled", eleName + " is enabled", StepStatus.FAIL);
+    }
+
+    public boolean isSelected() {
+        if (this.initElement().isSelected()) {
+            logger.info("Element is selected");
+            return true;
+        } else {
+            logger.error("Element is not selected");
+            return false;
+        }
     }
 
     public boolean waitForElementToBeSelected(long... waitForSeconds) {
@@ -442,26 +492,6 @@ public class QAFElement<T extends QAFElement> implements IWebComponent {
         return result;
     }
 
-    public boolean isSelected() {
-        if(this.initElement().isSelected()){
-            logger.info("Element is selected");
-            return true;
-        }else {
-            logger.error("Element is not selected");
-            return false;
-        }
-    }
-
-    public boolean isDeselected() {
-        if (!this.initElement().isSelected()) {
-            logger.info("Element is not selected");
-            return true;
-        } else {
-            logger.error("Element is selected");
-            return false;
-        }
-
-    }
 
     public void verifySelected(String eleName) {
         if (this.waitForElementToBeSelected())

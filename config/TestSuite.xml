@@ -8,7 +8,7 @@
 		<classes>
 			<class name="com.app.testSuites.AppTests">
 				<methods>
-					<include name="f2" />
+					<include name="f4" />
 				</methods>
 			</class>
 		</classes>

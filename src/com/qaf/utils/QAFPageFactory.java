@@ -13,7 +13,7 @@ public class QAFPageFactory {
         Field[] allFields = page.getClass().getDeclaredFields();
         for (Field field : allFields)
             if (field.isAnnotationPresent(Find.class)) {
-                System.out.println(field.getType().getName());
+//                System.out.println(field.getType().getName());
                 Find find = field.getAnnotation(Find.class);
                 With with = find.with();
                 String value = find.value();

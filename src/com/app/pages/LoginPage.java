@@ -1,6 +1,6 @@
 package com.app.pages;
 
-import com.app.component.LogInForm;
+import com.app.htmlcomponents.LogInForm;
 import com.qaf.annotations.Find;
 import com.qaf.component.QAFElement;
 import com.qaf.component.With;

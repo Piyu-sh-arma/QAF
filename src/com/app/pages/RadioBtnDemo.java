@@ -1,7 +1,6 @@
 package com.app.pages;
 
-import com.app.component.CheckBox;
-import com.app.component.RadioButton;
+import com.app.htmlcomponents.RadioButton;
 import com.qaf.annotations.Find;
 import com.qaf.base.QAFPage;
 import com.qaf.component.With;

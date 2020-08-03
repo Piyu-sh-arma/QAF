@@ -1,4 +1,4 @@
-package com.app.component;
+package com.app.htmlcomponents;
 
 import com.qaf.component.QAFElement;
 import com.qaf.component.With;
@@ -31,7 +31,7 @@ public class CheckBox extends QAFElement {
         }
         this.waitForElementToBeEnabled();
         this.unCheck();
-        if (this.isDeselected())
+        if (!this.isSelected())
             Reporter.reportStep("Deselect checkbox", "Checkbox " + chkBoxName + " is unchecked", StepStatus.PASS);
         else
             Reporter.reportStep("Deselect checkbox", "Checkbox " + chkBoxName + " is checked", StepStatus.FAIL);
